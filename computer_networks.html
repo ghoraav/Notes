@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Networks — Complete Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #7c3aed;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --pink: #ec4899;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Bebas Neue', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,14,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .logo {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+  .logo span { color: var(--accent2); }
+
+  /* SIDEBAR */
+  .layout { display: flex; min-height: 100vh; padding-top: 56px; }
+
+  nav.sidebar {
+    width: 260px; min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed; top: 56px; bottom: 0;
+    overflow-y: auto; overflow-x: hidden;
+    padding: 1.5rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  nav.sidebar::-webkit-scrollbar { width: 4px; }
+  nav.sidebar::-webkit-scrollbar-track { background: transparent; }
+  nav.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .nav-section { margin-bottom: 0.5rem; }
+
+  .nav-section-title {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    padding: 0.75rem 1.25rem 0.25rem;
+  }
+
+  nav.sidebar a {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.45rem 1.25rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  nav.sidebar a:hover, nav.sidebar a.active {
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+    border-left-color: var(--accent);
+  }
+
+  nav.sidebar a .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  nav.sidebar a:hover .dot { background: var(--accent); }
+
+  /* MAIN CONTENT */
+  main {
+    margin-left: 260px;
+    flex: 1;
+    padding: 2rem 2.5rem 6rem;
+    max-width: 980px;
+  }
+
+  /* SECTIONS */
+  section {
+    margin-bottom: 4rem;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex; align-items: baseline; gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 2px;
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.75rem 0 0.6rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  h3::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--yellow);
+    margin: 1.25rem 0 0.4rem;
+  }
+
+  p { color: var(--text-dim); margin-bottom: 0.75rem; }
+
+  strong { color: var(--text); font-weight: 600; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    background: var(--surface2);
+    color: var(--accent);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  pre {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+
+  pre .kw { color: var(--accent); }
+  pre .cm { color: var(--text-muted); font-style: italic; }
+  pre .str { color: var(--green); }
+  pre .num { color: var(--accent2); }
+  pre .fn { color: var(--yellow); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin: 1rem 0;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--accent2); }
+  .card-title {
+    font-weight: 600; color: var(--text); font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    main { margin-left: 0; padding: 1.25rem; }
+    nav.sidebar { display: none; }
+  }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 10px; border: 1px solid var(--border); }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  thead { background: var(--surface2); }
+  thead th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr { border-bottom: 1px solid rgba(30,45,69,0.5); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,212,255,0.03); }
+  td { padding: 0.65rem 1rem; color: var(--text-dim); vertical-align: top; }
+  td:first-child { color: var(--text); font-weight: 500; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badge-blue { background: rgba(0,212,255,0.12); color: var(--accent); }
+  .badge-orange { background: rgba(255,107,53,0.12); color: var(--accent2); }
+  .badge-green { background: rgba(16,185,129,0.12); color: var(--green); }
+  .badge-purple { background: rgba(124,58,237,0.12); color: #a78bfa; }
+  .badge-yellow { background: rgba(245,158,11,0.12); color: var(--yellow); }
+  .badge-red { background: rgba(239,68,68,0.12); color: var(--red); }
+  .badge-pink { background: rgba(236,72,153,0.12); color: var(--pink); }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border-left: 3px solid;
+    padding: 0.85rem 1rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+  .callout-info { border-color: var(--accent); background: rgba(0,212,255,0.05); color: var(--text-dim); }
+  .callout-warn { border-color: var(--yellow); background: rgba(245,158,11,0.05); color: var(--text-dim); }
+  .callout-tip { border-color: var(--green); background: rgba(16,185,129,0.05); color: var(--text-dim); }
+  .callout-danger { border-color: var(--red); background: rgba(239,68,68,0.05); color: var(--text-dim); }
+  .callout strong { color: inherit; }
+
+  /* OSI LAYER VISUAL */
+  .osi-stack { display: flex; flex-direction: column; gap: 4px; margin: 1rem 0; }
+  .osi-layer {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.7rem 1.25rem;
+    border-radius: 6px;
+    transition: transform 0.15s;
+    cursor: default;
+  }
+  .osi-layer:hover { transform: translateX(6px); }
+  .osi-layer .layer-num {
+    font-family: var(--mono); font-size: 0.7rem;
+    width: 20px; text-align: center; flex-shrink: 0;
+    font-weight: 700;
+  }
+  .osi-layer .layer-name { font-weight: 600; font-size: 0.85rem; width: 130px; flex-shrink: 0; }
+  .osi-layer .layer-pdu { font-family: var(--mono); font-size: 0.7rem; width: 80px; flex-shrink: 0; }
+  .osi-layer .layer-protocols { font-size: 0.78rem; color: var(--text-muted); }
+
+  .l7 { background: rgba(236,72,153,0.12); } .l7 .layer-num, .l7 .layer-name { color: var(--pink); }
+  .l6 { background: rgba(245,158,11,0.12); } .l6 .layer-num, .l6 .layer-name { color: var(--yellow); }
+  .l5 { background: rgba(239,68,68,0.12); } .l5 .layer-num, .l5 .layer-name { color: var(--red); }
+  .l4 { background: rgba(16,185,129,0.12); } .l4 .layer-num, .l4 .layer-name { color: var(--green); }
+  .l3 { background: rgba(0,212,255,0.12); } .l3 .layer-num, .l3 .layer-name { color: var(--accent); }
+  .l2 { background: rgba(124,58,237,0.12); } .l2 .layer-num, .l2 .layer-name { color: #a78bfa; }
+  .l1 { background: rgba(255,107,53,0.12); } .l1 .layer-num, .l1 .layer-name { color: var(--accent2); }
+
+  /* PORT TABLE SPECIAL */
+  .port-num { font-family: var(--mono); font-weight: 700; color: var(--accent); }
+  .proto-tcp { color: var(--green); font-family: var(--mono); font-size: 0.72rem; }
+  .proto-udp { color: var(--yellow); font-family: var(--mono); font-size: 0.72rem; }
+  .proto-both { color: var(--pink); font-family: var(--mono); font-size: 0.72rem; }
+
+  /* LIST STYLES */
+  ul.neat { list-style: none; padding: 0; }
+  ul.neat li {
+    padding: 0.35rem 0 0.35rem 1.25rem;
+    position: relative;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+  ul.neat li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--accent2);
+    font-size: 0.7rem;
+    top: 0.5rem;
+  }
+
+  /* FORMULA */
+  .formula {
+    font-family: var(--mono);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+    color: var(--yellow);
+    font-size: 0.85rem;
+    margin: 1rem 0;
+  }
+
+  /* SEARCH */
+  .search-bar {
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  #search {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.75rem;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #search:focus { border-color: var(--accent); }
+  #search::placeholder { color: var(--text-muted); }
+
+  /* HERO BANNER */
+  .hero {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-size: 3rem;
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-sub { color: var(--text-muted); font-size: 0.85rem; max-width: 500px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+
+  .progress-bar {
+    position: fixed; top: 56px; left: 0; right: 0; height: 2px;
+    background: transparent; z-index: 999;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0%; transition: width 0.1s;
+  }
+
+  /* BACK TO TOP */
+  #back-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none; cursor: pointer;
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+    font-family: var(--mono);
+    z-index: 999;
+  }
+  #back-top.visible { opacity: 1; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* highlight search matches */
+  mark { background: rgba(245,158,11,0.3); color: var(--yellow); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+
+<header>
+  <div class="logo">NET<span>REF</span></div>
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search concepts...">
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar" id="sidebar">
+
+  <div class="nav-section">
+    <div class="nav-section-title">Foundations</div>
+    <a href="#overview"><span class="dot"></span>Overview & Models</a>
+    <a href="#physical"><span class="dot"></span>Physical Layer</a>
+    <a href="#datalink"><span class="dot"></span>Data Link Layer</a>
+    <a href="#network"><span class="dot"></span>Network Layer</a>
+    <a href="#transport"><span class="dot"></span>Transport Layer</a>
+    <a href="#session"><span class="dot"></span>Session & Presentation</a>
+    <a href="#appLayer"><span class="dot"></span>Application Layer</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">IP & Addressing</div>
+    <a href="#ipv4"><span class="dot"></span>IPv4 & Subnetting</a>
+    <a href="#ipv6"><span class="dot"></span>IPv6</a>
+    <a href="#nat"><span class="dot"></span>NAT & PAT</a>
+    <a href="#dhcp"><span class="dot"></span>DHCP</a>
+    <a href="#dns"><span class="dot"></span>DNS Deep Dive</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Routing & Switching</div>
+    <a href="#routing"><span class="dot"></span>Routing Protocols</a>
+    <a href="#switching"><span class="dot"></span>Switching & VLANs</a>
+    <a href="#stp"><span class="dot"></span>STP & Redundancy</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Advanced Topics</div>
+    <a href="#tcp-deep"><span class="dot"></span>TCP Deep Dive</a>
+    <a href="#congestion"><span class="dot"></span>Congestion Control</a>
+    <a href="#qos"><span class="dot"></span>QoS</a>
+    <a href="#sdn"><span class="dot"></span>SDN & NFV</a>
+    <a href="#mpls"><span class="dot"></span>MPLS</a>
+    <a href="#wireless"><span class="dot"></span>Wireless & WiFi</a>
+    <a href="#security"><span class="dot"></span>Network Security</a>
+    <a href="#tls"><span class="dot"></span>TLS / SSL</a>
+    <a href="#firewall"><span class="dot"></span>Firewalls & IDS/IPS</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Protocols</div>
+    <a href="#http"><span class="dot"></span>HTTP/1.1 → HTTP/3</a>
+    <a href="#websockets"><span class="dot"></span>WebSockets & gRPC</a>
+    <a href="#email-proto"><span class="dot"></span>Email Protocols</a>
+    <a href="#ports"><span class="dot"></span>⚡ Port Numbers</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Performance & Design</div>
+    <a href="#performance"><span class="dot"></span>Metrics & Performance</a>
+    <a href="#cdn"><span class="dot"></span>CDN & Load Balancing</a>
+    <a href="#errors"><span class="dot"></span>Error Detection</a>
+    <a href="#media"><span class="dot"></span>Transmission Media</a>
+  </div>
+
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-title">COMPUTER<br><span>NETWORKS</span></div>
+  <div class="hero-sub">Complete reference for internship assessments — basics to advanced. Covers OSI, TCP/IP, routing algorithms, congestion control, SDN, TLS internals, and every standard port.</div>
+  <div class="hero-tags">
+    <span class="badge badge-blue">OSI Model</span>
+    <span class="badge badge-orange">TCP/IP</span>
+    <span class="badge badge-green">Routing</span>
+    <span class="badge badge-purple">Security</span>
+    <span class="badge badge-yellow">DNS</span>
+    <span class="badge badge-pink">HTTP/3</span>
+    <span class="badge badge-red">MPLS</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: OVERVIEW -->
+<!-- ============================================================ -->
+<section id="overview">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>OVERVIEW & MODELS</h2>
+  </div>
+
+  <h3>OSI 7-Layer Model</h3>
+  <p>The <strong>Open Systems Interconnection (OSI)</strong> model standardises network communication into 7 abstraction layers. Each layer serves the layer above it and is served by the layer below.</p>
+
+  <div class="osi-stack">
+    <div class="osi-layer l7"><span class="layer-num">7</span><span class="layer-name">Application</span><span class="layer-pdu">Data</span><span class="layer-protocols">HTTP, HTTPS, FTP, SMTP, DNS, SNMP, Telnet</span></div>
+    <div class="osi-layer l6"><span class="layer-num">6</span><span class="layer-name">Presentation</span><span class="layer-pdu">Data</span><span class="layer-protocols">SSL/TLS, JPEG, MPEG, ASCII, Encryption/Compression</span></div>
+    <div class="osi-layer l5"><span class="layer-num">5</span><span class="layer-name">Session</span><span class="layer-pdu">Data</span><span class="layer-protocols">NetBIOS, RPC, PPTP, SIP</span></div>
+    <div class="osi-layer l4"><span class="layer-num">4</span><span class="layer-name">Transport</span><span class="layer-pdu">Segment</span><span class="layer-protocols">TCP, UDP, SCTP — Port numbers live here</span></div>
+    <div class="osi-layer l3"><span class="layer-num">3</span><span class="layer-name">Network</span><span class="layer-pdu">Packet</span><span class="layer-protocols">IP (v4/v6), ICMP, OSPF, BGP, RIP, ARP*</span></div>
+    <div class="osi-layer l2"><span class="layer-num">2</span><span class="layer-name">Data Link</span><span class="layer-pdu">Frame</span><span class="layer-protocols">Ethernet, PPP, 802.11 MAC, VLAN, STP</span></div>
+    <div class="osi-layer l1"><span class="layer-num">1</span><span class="layer-name">Physical</span><span class="layer-pdu">Bits</span><span class="layer-protocols">Ethernet physical, USB, Bluetooth, DSL, fiber</span></div>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>Mnemonic (top→bottom):</strong> "All People Seem To Need Data Processing" | (bottom→top): "Please Do Not Throw Sausage Pizza Away"
+  </div>
+
+  <h3>TCP/IP Model (4-Layer)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>TCP/IP Layer</th><th>Corresponds to OSI</th><th>Key Protocols</th></tr></thead>
+      <tbody>
+        <tr><td>Application</td><td>5, 6, 7</td><td>HTTP, FTP, DNS, SMTP, SSH</td></tr>
+        <tr><td>Transport</td><td>4</td><td>TCP, UDP</td></tr>
+        <tr><td>Internet</td><td>3</td><td>IP, ICMP, ARP, IGMP</td></tr>
+        <tr><td>Network Access</td><td>1, 2</td><td>Ethernet, WiFi, PPP</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Key Differences: OSI vs TCP/IP</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="badge badge-blue">OSI</span> 7 Layers</div>
+      <p style="margin:0;font-size:0.83rem;">Conceptual/reference model. Strict separation. Rarely implemented purely. Good for troubleshooting. Has Presentation and Session layers.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-orange">TCP/IP</span> 4 Layers</div>
+      <p style="margin:0;font-size:0.83rem;">Practical, deployed model. Combines OSI layers 5-7 into Application. No strict separation. The internet runs on this.</p>
+    </div>
+  </div>
+
+  <h3>Encapsulation & Decapsulation</h3>
+  <p>As data travels down the stack, each layer <strong>adds a header</strong> (and sometimes a trailer). This is <em>encapsulation</em>. At the receiver, each layer <strong>strips its header</strong> — decapsulation. The PDU name changes at each layer: Data → Segment → Packet → Frame → Bits.</p>
+  <pre>
+App Layer:     [  DATA  ]
+Transport:     [ TCP HDR | DATA ]
+Network:       [ IP HDR | TCP HDR | DATA ]
+Data Link:     [ ETH HDR | IP HDR | TCP HDR | DATA | ETH TRAILER ]
+Physical:      101010010110... (bits on wire)</pre>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- PHYSICAL LAYER -->
+<!-- ============================================================ -->
+<section id="physical">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>PHYSICAL LAYER</h2>
+  </div>
+
+  <p>Layer 1 deals with raw bit transmission over a physical medium. It defines electrical voltages, frequencies, pin layouts, cable specifications, and signal encoding.</p>
+
+  <h3>Signal Encoding Schemes</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scheme</th><th>Mechanism</th><th>Used In</th></tr></thead>
+      <tbody>
+        <tr><td>NRZ-L</td><td>0 = high, 1 = low (Non-Return to Zero)</td><td>Serial ports</td></tr>
+        <tr><td>Manchester</td><td>Transition in middle of each bit period</td><td>10Base-T Ethernet</td></tr>
+        <tr><td>4B/5B</td><td>Every 4 bits mapped to 5-bit code</td><td>100Base-TX, FDDI</td></tr>
+        <tr><td>8B/10B</td><td>DC balance + run-length limiting</td><td>Gigabit Ethernet, USB 3.0</td></tr>
+        <tr><td>PAM-4</td><td>4 amplitude levels; 2 bits/symbol</td><td>25G/100G Ethernet</td></tr>
+        <tr><td>QAM-16/64</td><td>Amplitude + phase modulation</td><td>ADSL, WiFi (802.11n+)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Nyquist & Shannon Theorems</h3>
+  <div class="formula">Nyquist: Max Bit Rate = 2 × B × log₂(V) &nbsp;&nbsp;|&nbsp;&nbsp; B = bandwidth (Hz), V = signal levels</div>
+  <div class="formula">Shannon: Max Capacity = B × log₂(1 + S/N) &nbsp;&nbsp;|&nbsp;&nbsp; S/N = signal-to-noise ratio</div>
+  <p>Nyquist applies to <strong>noiseless</strong> channels; Shannon gives the theoretical maximum for <strong>noisy</strong> channels regardless of encoding.</p>
+
+  <h3>Multiplexing Techniques</h3>
+  <div class="grid-3">
+    <div class="card"><div class="card-title"><span class="badge badge-blue">FDM</span> Frequency Division</div><p style="font-size:0.8rem;margin:0">Different signals on different frequency bands simultaneously. Used in cable TV, analog radio.</p></div>
+    <div class="card"><div class="card-title"><span class="badge badge-green">TDM</span> Time Division</div><p style="font-size:0.8rem;margin:0">Each signal gets a time slot in a repeating frame. Used in T1/E1, SONET/SDH.</p></div>
+    <div class="card"><div class="card-title"><span class="badge badge-orange">WDM</span> Wavelength Division</div><p style="font-size:0.8rem;margin:0">Different wavelengths (colors) of light on a single fiber. DWDM supports 80+ channels.</p></div>
+    <div class="card"><div class="card-title"><span class="badge badge-purple">CDM</span> Code Division</div><p style="font-size:0.8rem;margin:0">Signals spread over entire bandwidth using orthogonal codes. Used in 3G CDMA, GPS.</p></div>
+    <div class="card"><div class="card-title"><span class="badge badge-yellow">OFDM</span> Orthogonal FDM</div><p style="font-size:0.8rem;margin:0">Many closely spaced subcarriers; orthogonal so no inter-carrier interference. 4G/5G, 802.11a/g/n/ac/ax.</p></div>
+    <div class="card"><div class="card-title"><span class="badge badge-red">STDM</span> Statistical TDM</div><p style="font-size:0.8rem;margin:0">Slots allocated dynamically based on demand. More efficient than fixed TDM.</p></div>
+  </div>
+
+  <h3>Transmission Modes</h3>
+  <ul class="neat">
+    <li><strong>Simplex</strong> — One direction only (e.g., TV broadcast, keyboard)</li>
+    <li><strong>Half-Duplex</strong> — Both directions but not simultaneously (e.g., walkie-talkie, old hubs)</li>
+    <li><strong>Full-Duplex</strong> — Simultaneous both directions (e.g., telephone, modern switches)</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- DATA LINK LAYER -->
+<!-- ============================================================ -->
+<section id="datalink">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>DATA LINK LAYER</h2>
+  </div>
+
+  <p>Layer 2 provides node-to-node delivery, framing, MAC addressing, error detection, and access control over a single link.</p>
+
+  <h3>MAC Addresses</h3>
+  <p>A <strong>48-bit (6-byte) hardware address</strong> burned into a NIC, written as <code>AA:BB:CC:DD:EE:FF</code>. First 3 bytes = OUI (vendor), last 3 = device. Broadcast MAC = <code>FF:FF:FF:FF:FF:FF</code>.</p>
+
+  <h3>Ethernet Frame Structure</h3>
+  <pre>
+| Preamble (7B) | SFD (1B) | Dst MAC (6B) | Src MAC (6B) | EtherType (2B) | Payload (46–1500B) | FCS (4B) |
+  10101010...    10101011                                   0x0800=IPv4
+                                                            0x86DD=IPv6
+                                                            0x0806=ARP</pre>
+  <p><strong>MTU (Maximum Transmission Unit)</strong> for Ethernet = <strong>1500 bytes</strong>. Jumbo frames extend to 9000 bytes in data centers.</p>
+
+  <h3>MAC Sub-layers</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">LLC — Logical Link Control (802.2)</div><p style="font-size:0.83rem;margin:0">Handles multiplexing, error checking, flow control between MAC and network layer.</p></div>
+    <div class="card"><div class="card-title">MAC — Media Access Control</div><p style="font-size:0.83rem;margin:0">Controls how devices access the shared medium. Handles CSMA/CD, CSMA/CA.</p></div>
+  </div>
+
+  <h3>CSMA/CD vs CSMA/CA</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>CSMA/CD (Collision Detection)</th><th>CSMA/CA (Collision Avoidance)</th></tr></thead>
+      <tbody>
+        <tr><td>Used in</td><td>Wired Ethernet (legacy)</td><td>802.11 WiFi</td></tr>
+        <tr><td>Mechanism</td><td>Transmit → detect collision → jam + backoff</td><td>Wait for idle + random backoff before transmit</td></tr>
+        <tr><td>RTS/CTS</td><td>Not used</td><td>Optional: Request To Send / Clear To Send</td></tr>
+        <tr><td>Binary Exponential Backoff</td><td>After k collisions, wait 0–(2ᵏ−1) slot times</td><td>Contention window expands similarly</td></tr>
+        <tr><td>Relevance today</td><td>Obsolete with full-duplex switches</td><td>Active in every WiFi network</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>ARP (Address Resolution Protocol)</h3>
+  <p>Maps an <strong>IP address → MAC address</strong> on a LAN. Works at Layer 2/3 boundary.</p>
+  <pre>
+Host A wants to reach 192.168.1.5 but doesn't know its MAC.
+1. A broadcasts ARP Request: "Who has 192.168.1.5? Tell 192.168.1.1"
+2. Host with IP 192.168.1.5 responds unicast with its MAC.
+3. A caches IP→MAC in ARP table (default 20 min TTL).
+
+Gratuitous ARP: Host ARPs for its own IP.
+  Used for: IP conflict detection, updating ARP caches after failover.
+ARP Poisoning: Attacker sends fake ARP replies → MiTM. Defense: Dynamic ARP Inspection (DAI).</pre>
+
+  <h3>VLANs & 802.1Q Tagging</h3>
+  <p>VLANs logically segment a physical network. A <strong>802.1Q tag (4 bytes)</strong> is inserted into the Ethernet frame after the source MAC:</p>
+  <pre>
+| Dst MAC | Src MAC | [802.1Q: TPID=0x8100 | PCP(3b) | DEI(1b) | VID(12b)] | EtherType | Payload | FCS |
+                                                                     ↑ VLAN ID 1–4094</pre>
+  <ul class="neat">
+    <li><strong>Access port</strong> — carries traffic for one VLAN; untagged to end device</li>
+    <li><strong>Trunk port</strong> — carries multiple VLANs with 802.1Q tags between switches</li>
+    <li><strong>Native VLAN</strong> — untagged traffic on a trunk belongs to native VLAN (default VLAN 1)</li>
+    <li><strong>Inter-VLAN routing</strong> — requires Layer 3 (router or Layer-3 switch). "Router-on-a-stick" uses sub-interfaces.</li>
+  </ul>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- NETWORK LAYER -->
+<!-- ============================================================ -->
+<section id="network">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>NETWORK LAYER</h2>
+  </div>
+
+  <h3>IP Header (IPv4)</h3>
+  <pre>
+ 0               1               2               3
+ 0 1 2 3 4 5 6 7|0 1 2 3 4 5 6 7|0 1 2 3 4 5 6 7|0 1 2 3 4 5 6 7
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version| IHL  |   DSCP  | ECN |         Total Length          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Identification        |Flags|    Fragment Offset      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Time to Live |    Protocol   |       Header Checksum         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Source Address                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Destination Address                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</pre>
+  <p><strong>Protocol field values:</strong> 1=ICMP, 6=TCP, 17=UDP, 47=GRE, 50=ESP, 89=OSPF</p>
+  <p><strong>TTL</strong> decremented by each router. Packet dropped + ICMP Time Exceeded sent when TTL=0. Prevents infinite loops.</p>
+  <p><strong>Flags:</strong> Bit 1 = Don't Fragment (DF); Bit 2 = More Fragments (MF). Used in fragmentation/reassembly.</p>
+
+  <h3>ICMP</h3>
+  <p>Internet Control Message Protocol — used for error reporting and diagnostics. Carried inside IP.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Code</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>Echo Reply (ping reply)</td></tr>
+        <tr><td>3</td><td>0–15</td><td>Destination Unreachable (0=net, 1=host, 3=port, 4=fragmentation needed)</td></tr>
+        <tr><td>5</td><td>0–3</td><td>Redirect (router tells host to use better route)</td></tr>
+        <tr><td>8</td><td>0</td><td>Echo Request (ping)</td></tr>
+        <tr><td>11</td><td>0</td><td>Time Exceeded (TTL=0, used by traceroute)</td></tr>
+        <tr><td>12</td><td>0</td><td>Parameter Problem (bad IP header)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- IPv4 & SUBNETTING -->
+<!-- ============================================================ -->
+<section id="ipv4">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>IPv4 & SUBNETTING</h2>
+  </div>
+
+  <h3>Address Classes (Classful — legacy)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Class</th><th>Range</th><th>Default Mask</th><th>Networks</th><th>Hosts/net</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>1.0.0.0 – 126.255.255.255</td><td>/8</td><td>126</td><td>16,777,214</td><td>Large orgs</td></tr>
+        <tr><td>B</td><td>128.0.0.0 – 191.255.255.255</td><td>/16</td><td>16,382</td><td>65,534</td><td>Medium orgs</td></tr>
+        <tr><td>C</td><td>192.0.0.0 – 223.255.255.255</td><td>/24</td><td>2,097,150</td><td>254</td><td>Small orgs</td></tr>
+        <tr><td>D</td><td>224.0.0.0 – 239.255.255.255</td><td>N/A</td><td>—</td><td>—</td><td>Multicast</td></tr>
+        <tr><td>E</td><td>240.0.0.0 – 255.255.255.255</td><td>N/A</td><td>—</td><td>—</td><td>Reserved/Experimental</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Private Address Ranges (RFC 1918)</h3>
+  <ul class="neat">
+    <li><code>10.0.0.0/8</code> — Class A private (10.x.x.x)</li>
+    <li><code>172.16.0.0/12</code> — Class B private (172.16.x.x – 172.31.x.x)</li>
+    <li><code>192.168.0.0/16</code> — Class C private (192.168.x.x)</li>
+    <li><code>127.0.0.0/8</code> — Loopback</li>
+    <li><code>169.254.0.0/16</code> — APIPA / Link-Local (auto-assigned when DHCP fails)</li>
+  </ul>
+
+  <h3>CIDR & Subnetting</h3>
+  <p><strong>CIDR (Classless Inter-Domain Routing)</strong> replaced classful addressing. Subnet mask specifies how many bits are network bits.</p>
+  <div class="formula"># of usable hosts = 2^(host bits) − 2 &nbsp;&nbsp;|&nbsp;&nbsp; # of subnets = 2^(borrowed bits)</div>
+
+  <h4>Quick CIDR Reference</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>CIDR</th><th>Subnet Mask</th><th>Usable Hosts</th><th>Block Size</th></tr></thead>
+      <tbody>
+        <tr><td>/30</td><td>255.255.255.252</td><td>2</td><td>4</td></tr>
+        <tr><td>/29</td><td>255.255.255.248</td><td>6</td><td>8</td></tr>
+        <tr><td>/28</td><td>255.255.255.240</td><td>14</td><td>16</td></tr>
+        <tr><td>/27</td><td>255.255.255.224</td><td>30</td><td>32</td></tr>
+        <tr><td>/26</td><td>255.255.255.192</td><td>62</td><td>64</td></tr>
+        <tr><td>/25</td><td>255.255.255.128</td><td>126</td><td>128</td></tr>
+        <tr><td>/24</td><td>255.255.255.0</td><td>254</td><td>256</td></tr>
+        <tr><td>/23</td><td>255.255.254.0</td><td>510</td><td>512</td></tr>
+        <tr><td>/22</td><td>255.255.252.0</td><td>1022</td><td>1024</td></tr>
+        <tr><td>/16</td><td>255.255.0.0</td><td>65,534</td><td>65,536</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>VLSM (Variable Length Subnet Masking)</h3>
+  <p>Allows different-sized subnets within the same IP space. Critical for efficient IP allocation. Always subnet the <strong>largest requirement first</strong>.</p>
+
+  <h3>Supernetting / Route Summarization</h3>
+  <p>Combining multiple contiguous subnets into a single summary route. Reduces routing table size. Requires contiguous block aligned on power-of-2 boundary.</p>
+  <div class="callout callout-tip">
+    <strong>Subnetting trick:</strong> The subnet address = IP AND mask. Broadcast = subnet OR (NOT mask). First host = subnet + 1. Last host = broadcast − 1.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- IPv6 -->
+<!-- ============================================================ -->
+<section id="ipv6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>IPv6</h2>
+  </div>
+
+  <p>128-bit addresses. Written as 8 groups of 4 hex digits: <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code></p>
+  <p>Abbreviation rules: (1) leading zeros in each group can be omitted; (2) one sequence of consecutive all-zero groups can be replaced with <code>::</code></p>
+
+  <h3>Address Types</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Prefix</th><th>Scope</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Loopback</td><td>::1/128</td><td>—</td><td>Equivalent to IPv4 127.0.0.1</td></tr>
+        <tr><td>Link-Local</td><td>fe80::/10</td><td>Link</td><td>Auto-configured, not routable. Always on every interface.</td></tr>
+        <tr><td>Unique Local</td><td>fc00::/7</td><td>Site</td><td>RFC 4193. Like private RFC 1918.</td></tr>
+        <tr><td>Global Unicast</td><td>2000::/3</td><td>Global</td><td>Publicly routable. Currently 2000:: – 3FFF::</td></tr>
+        <tr><td>Multicast</td><td>ff00::/8</td><td>Various</td><td>ff02::1 = all nodes; ff02::2 = all routers</td></tr>
+        <tr><td>Anycast</td><td>Same as unicast</td><td>Global</td><td>Assigned to multiple interfaces; routed to nearest</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>IPv6 Header Improvements over IPv4</h3>
+  <ul class="neat">
+    <li>Fixed 40-byte header (no options field bloat)</li>
+    <li><strong>No fragmentation by routers</strong> — only source does it using extension headers</li>
+    <li><strong>No checksum</strong> — leaves verification to upper layers (TCP/UDP)</li>
+    <li><strong>Flow Label</strong> field for QoS without deep packet inspection</li>
+    <li><strong>Extension headers</strong> replace IPv4 options (Hop-by-Hop, Routing, Fragment, Authentication, ESP)</li>
+  </ul>
+
+  <h3>NDP (Neighbor Discovery Protocol)</h3>
+  <p>Replaces ARP in IPv6. Uses ICMPv6 messages:</p>
+  <ul class="neat">
+    <li><strong>RS/RA</strong> — Router Solicitation / Router Advertisement (stateless autoconfiguration)</li>
+    <li><strong>NS/NA</strong> — Neighbor Solicitation / Neighbor Advertisement (ARP replacement)</li>
+    <li><strong>Redirect</strong> — Router tells host of better next hop</li>
+  </ul>
+
+  <h3>SLAAC (Stateless Address Autoconfiguration)</h3>
+  <p>Host generates its own IPv6 address using RA prefix + EUI-64 (from MAC address) or random bits (RFC 7217). No DHCP server needed.</p>
+  <div class="formula">EUI-64: MAC 00:1A:2B:3C:4D:5E → 021A:2BFF:FE3C:4D5E (insert FFFE, flip 7th bit)</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- NAT -->
+<!-- ============================================================ -->
+<section id="nat">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>NAT & PAT</h2>
+  </div>
+
+  <h3>Types of NAT</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Mapping</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>Static NAT</td><td>1 private IP ↔ 1 public IP (permanent)</td><td>Web/mail servers needing fixed public IP</td></tr>
+        <tr><td>Dynamic NAT</td><td>Private IP → pool of public IPs (first come, first served)</td><td>Large org with IP pool</td></tr>
+        <tr><td>PAT (NAPT / Overload)</td><td>Many private IPs → 1 public IP using different ports</td><td>Home router — most common NAT</td></tr>
+        <tr><td>Twice NAT (Bidirectional)</td><td>Both src and dst translated</td><td>Overlapping address spaces</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>How PAT Works</h3>
+  <pre>
+Private         Router (PAT)      Internet
+10.0.0.2:54321 → 203.0.113.1:1024 → Server
+10.0.0.3:54321 → 203.0.113.1:1025 → Server
+
+NAT Table: [203.0.113.1:1024 ↔ 10.0.0.2:54321]
+           [203.0.113.1:1025 ↔ 10.0.0.3:54321]</pre>
+
+  <div class="callout callout-warn">
+    <strong>NAT breaks end-to-end connectivity</strong> — problematic for VoIP, gaming, P2P. Solutions: STUN, TURN, ICE (used in WebRTC), UPnP, NAT-PMP.
+  </div>
+
+  <h3>NAT Traversal Techniques</h3>
+  <ul class="neat">
+    <li><strong>STUN</strong> — Client discovers its public IP:port by querying a STUN server. Works for "cone" NATs.</li>
+    <li><strong>TURN</strong> — Traffic relayed through a server. Works for symmetric NAT but costly.</li>
+    <li><strong>ICE</strong> — Framework combining STUN + TURN for WebRTC peer connections.</li>
+    <li><strong>Hole Punching</strong> — Both peers simultaneously send packets to each other's public endpoints, punching holes in NAT tables.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- DHCP -->
+<!-- ============================================================ -->
+<section id="dhcp">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>DHCP</h2>
+  </div>
+
+  <p>Dynamic Host Configuration Protocol (UDP 67 server, 68 client) dynamically assigns IP addresses and network config.</p>
+
+  <h3>DORA Process</h3>
+  <pre>
+Client           Broadcast                DHCP Server
+  │──── DISCOVER ────────────────────────────▶│  (src: 0.0.0.0:68, dst: 255.255.255.255:67)
+  │◀─── OFFER ─────────────────────────────── │  (offers IP + lease time + gateway + DNS)
+  │──── REQUEST ──────────────────────────────▶│  (client accepts the offer, broadcasts to all servers)
+  │◀─── ACK ───────────────────────────────── │  (server confirms; client configures IP)</pre>
+
+  <h3>DHCP Lease & Options</h3>
+  <ul class="neat">
+    <li><strong>Option 1</strong> — Subnet mask</li>
+    <li><strong>Option 3</strong> — Default gateway (router)</li>
+    <li><strong>Option 6</strong> — DNS server</li>
+    <li><strong>Option 15</strong> — Domain name</li>
+    <li><strong>Option 43</strong> — Vendor-specific info (e.g., VoIP phone config)</li>
+    <li><strong>Option 82</strong> — DHCP relay agent info (circuit ID, remote ID)</li>
+    <li>At 50% of lease: client tries to <strong>renew</strong> with unicast to server</li>
+    <li>At 87.5% of lease: client tries to <strong>rebind</strong> with broadcast to any server</li>
+  </ul>
+
+  <h3>DHCPv6 vs SLAAC</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">DHCPv6 (Stateful)</div><p style="font-size:0.83rem;margin:0">Server assigns and tracks IPv6 addresses. RA has M-flag set. Server knows which IP is assigned to which host.</p></div>
+    <div class="card"><div class="card-title">SLAAC (Stateless)</div><p style="font-size:0.83rem;margin:0">Host auto-configures from RA prefix. No server needed. But DNS still needs to be configured (via DHCPv6 or RA RDNSS option).</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- DNS -->
+<!-- ============================================================ -->
+<section id="dns">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>DNS DEEP DIVE</h2>
+  </div>
+
+  <p>Domain Name System — distributed hierarchical database mapping domain names to IP addresses. Uses <strong>UDP port 53</strong> (TCP for zone transfers and large responses).</p>
+
+  <h3>DNS Hierarchy</h3>
+  <pre>
+Root (.)
+  └── TLD: .com, .org, .in, .uk
+        └── SLD: google.com, anthropic.com
+              └── Subdomain: mail.google.com, api.anthropic.com</pre>
+
+  <h3>DNS Resolution — Recursive vs Iterative</h3>
+  <pre>
+Client → Recursive Resolver → Root NS → TLD NS → Authoritative NS → IP
+         (ISP / 8.8.8.8)
+
+Recursive: resolver does all work, returns final answer to client.
+Iterative: resolver asks each NS in turn, gets referrals, contacts next NS itself.</pre>
+
+  <h3>DNS Record Types</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Record</th><th>Purpose</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>Domain → IPv4</td><td>example.com → 93.184.216.34</td></tr>
+        <tr><td>AAAA</td><td>Domain → IPv6</td><td>example.com → 2606:2800:220:1::/32</td></tr>
+        <tr><td>CNAME</td><td>Alias → canonical name</td><td>www → example.com</td></tr>
+        <tr><td>MX</td><td>Mail exchange + priority</td><td>10 mail.example.com</td></tr>
+        <tr><td>NS</td><td>Authoritative nameserver</td><td>ns1.example.com</td></tr>
+        <tr><td>PTR</td><td>Reverse DNS: IP → domain</td><td>34.216.184.93.in-addr.arpa → example.com</td></tr>
+        <tr><td>SOA</td><td>Start of Authority — zone metadata</td><td>Serial, refresh, retry, expire, minimum TTL</td></tr>
+        <tr><td>TXT</td><td>Arbitrary text</td><td>SPF, DKIM, DMARC, site verification</td></tr>
+        <tr><td>SRV</td><td>Service location</td><td>_sip._tcp.example.com priority weight port target</td></tr>
+        <tr><td>CAA</td><td>Which CAs can issue SSL certs</td><td>0 issue "letsencrypt.org"</td></tr>
+        <tr><td>DNSKEY / DS / RRSIG</td><td>DNSSEC records</td><td>Cryptographic chain of trust</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>DNSSEC</h3>
+  <p>DNS Security Extensions adds digital signatures to DNS responses. Chain of trust from root → TLD → authoritative. Prevents <strong>DNS cache poisoning (Kaminsky attack)</strong>. Does NOT provide confidentiality — use <strong>DoT or DoH</strong> for that.</p>
+
+  <h3>DoT & DoH</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title"><span class="badge badge-blue">DoT</span> DNS over TLS — Port 853</div><p style="font-size:0.83rem;margin:0">Encrypts DNS traffic over dedicated TLS connection. Distinguishable from other traffic (port 853). Easy for network admins to monitor.</p></div>
+    <div class="card"><div class="card-title"><span class="badge badge-orange">DoH</span> DNS over HTTPS — Port 443</div><p style="font-size:0.83rem;margin:0">DNS embedded in HTTPS traffic. Indistinguishable from web browsing. Harder to block. Used by browsers (Firefox, Chrome by default).</p></div>
+  </div>
+
+  <h3>DNS Cache Poisoning (Kaminsky Attack)</h3>
+  <p>Attacker floods resolver with fake DNS responses with random transaction IDs hoping to win the race before the real response. Fixed by: source port randomization + DNSSEC. Bailiwick checking also helps.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- TRANSPORT LAYER -->
+<!-- ============================================================ -->
+<section id="transport">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>TRANSPORT LAYER</h2>
+  </div>
+
+  <h3>TCP vs UDP</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>TCP</th><th>UDP</th></tr></thead>
+      <tbody>
+        <tr><td>Connection</td><td>Connection-oriented (3-way handshake)</td><td>Connectionless</td></tr>
+        <tr><td>Reliability</td><td>Guaranteed delivery, ACKs, retransmission</td><td>Best-effort, no ACKs</td></tr>
+        <tr><td>Ordering</td><td>Sequence numbers ensure order</td><td>No ordering</td></tr>
+        <tr><td>Flow Control</td><td>Sliding window</td><td>None</td></tr>
+        <tr><td>Congestion Control</td><td>Slow start, AIMD, etc.</td><td>None (app must handle)</td></tr>
+        <tr><td>Header Size</td><td>20–60 bytes</td><td>8 bytes</td></tr>
+        <tr><td>Speed</td><td>Slower (overhead)</td><td>Faster</td></tr>
+        <tr><td>Use Cases</td><td>HTTP, FTP, SSH, email</td><td>DNS, DHCP, VoIP, gaming, streaming, QUIC</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>UDP Header (8 bytes)</h3>
+  <pre>| Source Port (16b) | Destination Port (16b) | Length (16b) | Checksum (16b) |</pre>
+
+  <h3>SCTP (Stream Control Transmission Protocol)</h3>
+  <p>Alternative to TCP: multi-streaming (multiple streams in one connection, no head-of-line blocking), multi-homing (multiple IP per endpoint), 4-way handshake (cookie mechanism prevents SYN floods). Used in SS7/VoIP signaling, WebRTC data channels.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- TCP DEEP DIVE -->
+<!-- ============================================================ -->
+<section id="tcp-deep">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>TCP DEEP DIVE</h2>
+  </div>
+
+  <h3>TCP Header</h3>
+  <pre>
+| Src Port (16) | Dst Port (16) |
+| Sequence Number (32)          |
+| Acknowledgment Number (32)    |
+| Data Offset(4)|Reserved|Flags(9)| Window Size (16) |
+| Checksum (16) | Urgent Pointer(16) |
+| Options (variable) | Padding |
+
+Flags: URG ACK PSH RST SYN FIN (+ ECE CWR NS)</pre>
+
+  <h3>Three-Way Handshake</h3>
+  <pre>
+Client                          Server
+  │──── SYN (seq=x) ──────────────▶│
+  │◀─── SYN-ACK (seq=y, ack=x+1) ──│
+  │──── ACK (ack=y+1) ─────────────▶│
+  │         [Connection Established] │</pre>
+
+  <h3>Four-Way Teardown</h3>
+  <pre>
+Client                          Server
+  │──── FIN ──────────────────────▶│  (Client done sending)
+  │◀─── ACK ───────────────────────│  (Server ACKs FIN)
+  │◀─── FIN ───────────────────────│  (Server done sending)
+  │──── ACK ──────────────────────▶│  (Client ACKs; enters TIME_WAIT)
+  └── TIME_WAIT = 2×MSL (2×60s) ──┘  (prevents old segments from confusing new connections)</pre>
+
+  <h3>TCP State Machine</h3>
+  <pre>
+CLOSED → LISTEN (server) or SYN_SENT (client)
+SYN_SENT → SYN_RCVD (server) → ESTABLISHED (both after handshake)
+ESTABLISHED → FIN_WAIT_1 (initiator) → FIN_WAIT_2 → TIME_WAIT → CLOSED
+ESTABLISHED → CLOSE_WAIT (receiver) → LAST_ACK → CLOSED</pre>
+
+  <h3>Sliding Window & Flow Control</h3>
+  <p>The <strong>receive window (rwnd)</strong> advertised in the ACK tells sender how much buffer space is available. Sender can only have <code>min(cwnd, rwnd)</code> bytes unacknowledged in flight.</p>
+
+  <h3>Selective Acknowledgment (SACK)</h3>
+  <p>TCP option that allows receiver to ACK non-contiguous blocks, so sender only retransmits genuinely lost segments (not everything after the gap). Negotiated in SYN/SYN-ACK.</p>
+
+  <h3>TCP Timestamps Option</h3>
+  <p>Two values: TSval (sender's clock) and TSecr (echo of peer's TSval). Enables accurate RTT measurement and <strong>PAWS (Protection Against Wrapped Sequence numbers)</strong> — prevents old duplicate packets from older connections being accepted.</p>
+
+  <h3>TCP Fast Retransmit & Fast Recovery</h3>
+  <ul class="neat">
+    <li><strong>Fast Retransmit:</strong> After 3 duplicate ACKs, retransmit without waiting for retransmit timeout (RTO)</li>
+    <li><strong>Fast Recovery:</strong> After fast retransmit, set ssthresh = cwnd/2, cwnd = ssthresh + 3. Continue without going to slow start.</li>
+  </ul>
+
+  <h3>Nagle's Algorithm</h3>
+  <p>Reduces small packet proliferation: if there's unACKed data in flight and new data is smaller than MSS, buffer it until ACK arrives. Can cause latency in interactive apps. Disabled with <code>TCP_NODELAY</code> socket option (used in SSH, games, trading).</p>
+
+  <h3>TCP SYN Cookies</h3>
+  <p>Defense against SYN flood (DDoS). Server doesn't allocate resources on SYN; instead encodes state in the ISN (sequence number). Only allocates resources on receiving valid ACK. Drawback: TCP options (SACK, window scale) can't be remembered during handshake.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- CONGESTION CONTROL -->
+<!-- ============================================================ -->
+<section id="congestion">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>CONGESTION CONTROL</h2>
+  </div>
+
+  <h3>Core Variables</h3>
+  <ul class="neat">
+    <li><strong>cwnd</strong> (congestion window) — sender-side limit on unACKed bytes</li>
+    <li><strong>ssthresh</strong> (slow start threshold) — where slow start transitions to AIMD</li>
+    <li><strong>rwnd</strong> (receive window) — receiver-side buffer limit</li>
+    <li><strong>Effective window</strong> = min(cwnd, rwnd)</li>
+  </ul>
+
+  <h3>TCP Reno (Classic)</h3>
+  <pre>
+Phase 1: Slow Start
+  cwnd starts at 1 MSS. cwnd doubles every RTT (exponential) until cwnd ≥ ssthresh.
+
+Phase 2: Congestion Avoidance (AIMD)
+  cwnd increases by 1 MSS per RTT (linear). Additive Increase.
+
+On 3 dup ACKs (packet loss assumed):
+  ssthresh = cwnd / 2
+  cwnd = ssthresh + 3  (fast recovery)
+  retransmit lost segment
+
+On timeout (severe congestion):
+  ssthresh = cwnd / 2
+  cwnd = 1 MSS         (back to slow start)  — Multiplicative Decrease</pre>
+
+  <h3>TCP Cubic (Default in Linux)</h3>
+  <p>Uses a <strong>cubic function</strong> of time since last congestion event to set cwnd. More aggressive at high BDP (bandwidth-delay product) than Reno. W(t) = C(t − K)³ + Wmax. Default in Linux since 2.6.19.</p>
+
+  <h3>TCP BBR (Bottleneck Bandwidth and RTT)</h3>
+  <p>Google's model-based congestion control (2016). Instead of reacting to loss, BBR continuously estimates <strong>bottleneck bandwidth</strong> and <strong>minimum RTT</strong>, then sends at exactly that rate. Significantly better throughput on lossy/high-latency links (e.g., ocean cables, WiFi). Used in YouTube, Google CDN.</p>
+
+  <h3>QUIC Congestion Control</h3>
+  <p>QUIC (used in HTTP/3) implements its own congestion control at the application layer (typically Cubic or BBR). Avoids TCP head-of-line blocking since each QUIC stream is independent.</p>
+
+  <h3>ECN (Explicit Congestion Notification)</h3>
+  <p>Routers mark packets (ECT bit in IP header) instead of dropping them when buffers fill. Receiver echoes congestion signal back. Sender reduces rate without dropping. Requires support from both endpoints and all routers.</p>
+
+  <h3>AQM — Active Queue Management</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Algorithm</th><th>Mechanism</th><th>Advantage</th></tr></thead>
+      <tbody>
+        <tr><td>RED (Random Early Detection)</td><td>Randomly drop packets when queue exceeds avg threshold</td><td>Early signal before overflow</td></tr>
+        <tr><td>CoDel (Controlled Delay)</td><td>Drop packets that stay queued > target (5ms)</td><td>Solves bufferbloat</td></tr>
+        <tr><td>FQ-CoDel</td><td>Fair Queuing + CoDel per flow</td><td>Low latency for all flows; default in OpenWRT</td></tr>
+        <tr><td>PIE (Proportional Integral Enhanced)</td><td>Control theoretic approach to target latency</td><td>Cable modems (DOCSIS 3.1)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ROUTING -->
+<!-- ============================================================ -->
+<section id="routing">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>ROUTING PROTOCOLS</h2>
+  </div>
+
+  <h3>Routing Protocol Categories</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">IGP — Interior Gateway Protocol</div><p style="font-size:0.83rem;margin:0">Within a single AS (Autonomous System). Examples: RIP, OSPF, EIGRP, IS-IS.</p></div>
+    <div class="card"><div class="card-title">EGP — Exterior Gateway Protocol</div><p style="font-size:0.83rem;margin:0">Between ASes. BGP is the only EGP in use today. Powers the internet.</p></div>
+    <div class="card"><div class="card-title">Distance Vector</div><p style="font-size:0.83rem;margin:0">Each router knows distance/direction to every destination, not full topology. Periodic updates. RIP, EIGRP (hybrid).</p></div>
+    <div class="card"><div class="card-title">Link State</div><p style="font-size:0.83rem;margin:0">Each router knows the full topology. Runs Dijkstra SPF. Faster convergence. OSPF, IS-IS.</p></div>
+  </div>
+
+  <h3>RIP (Routing Information Protocol)</h3>
+  <ul class="neat">
+    <li>Distance Vector, metric = hop count (max 15; 16 = unreachable)</li>
+    <li>RIPv1: classful, broadcast. RIPv2: classless, multicast 224.0.0.9. RIPng: IPv6.</li>
+    <li>Updates every <strong>30 seconds</strong>. Convergence slow. Split horizon + poison reverse prevent loops.</li>
+    <li><strong>Counting to infinity problem</strong> — mitigated by split horizon and triggered updates.</li>
+  </ul>
+
+  <h3>OSPF (Open Shortest Path First)</h3>
+  <p>Link-state protocol. Uses Dijkstra's SPF algorithm. Administrative distance = 110.</p>
+  <pre>
+OSPF Packet Types: Hello | DBD (Database Description) | LSR | LSU | LSAck
+OSPF States: Down → Init → 2-Way → Exstart → Exchange → Loading → Full
+DR/BDR election on multi-access networks (highest priority, then highest Router ID)
+Hello interval: 10s (point-to-point / broadcast), 30s (NBMA)
+Dead interval: 4× Hello interval</pre>
+  <ul class="neat">
+    <li><strong>Area 0 (Backbone)</strong> — all other areas must connect to Area 0</li>
+    <li><strong>ABR</strong> — Area Border Router (connects areas to backbone)</li>
+    <li><strong>ASBR</strong> — AS Boundary Router (connects OSPF to other routing domains)</li>
+    <li>LSA Types: Type 1 (Router), Type 2 (Network), Type 3 (Summary), Type 4 (ASBR Summary), Type 5 (External), Type 7 (NSSA External)</li>
+    <li>Stub areas block Type 5 LSAs; Totally Stubby block Type 3+4+5; NSSA allow external routes as Type 7</li>
+  </ul>
+
+  <h3>BGP (Border Gateway Protocol)</h3>
+  <p>The Internet's routing protocol. Path-vector, uses TCP port 179. AD = 20 (eBGP), 200 (iBGP).</p>
+  <pre>
+BGP Message Types: OPEN | UPDATE | NOTIFICATION | KEEPALIVE
+BGP States: Idle → Connect → Active → OpenSent → OpenConfirm → Established
+eBGP: between different ASes (TTL=1 by default)
+iBGP: within same AS (requires full mesh or route reflectors/confederations)</pre>
+
+  <h4>BGP Path Selection (in order)</h4>
+  <pre>
+1. Highest Weight (Cisco proprietary, local)
+2. Highest Local Preference (within AS)
+3. Locally originated routes (network/redistribute/aggregate)
+4. Shortest AS_PATH
+5. Lowest Origin (IGP < EGP < incomplete)
+6. Lowest MED (from neighboring AS)
+7. eBGP over iBGP
+8. Lowest IGP metric to BGP next-hop
+9. Oldest eBGP route
+10. Lowest Router ID
+11. Lowest Neighbor IP</pre>
+
+  <div class="callout callout-warn">
+    <strong>BGP Hijacking:</strong> Attacker announces more-specific prefix for victim's IP space, attracting traffic. Mitigated by RPKI (Resource Public Key Infrastructure) which cryptographically validates route origin.
+  </div>
+
+  <h3>EIGRP (Enhanced IGRP)</h3>
+  <p>Cisco proprietary hybrid (distance-vector + some link-state features). Uses DUAL algorithm. Metric based on bandwidth + delay (+ load, reliability optionally). Supports VLSM, fast convergence. Protocol number 88.</p>
+
+  <h3>IS-IS (Intermediate System to Intermediate System)</h3>
+  <p>Link-state, ISO protocol (not IP-based itself). Used heavily by ISPs. Like OSPF but runs directly on Data Link layer. L1 = within area, L2 = between areas. Preferred over OSPF by large carriers due to scalability and flexibility.</p>
+
+  <h3>Administrative Distance</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Protocol</th><th>AD</th></tr></thead>
+      <tbody>
+        <tr><td>Connected</td><td>0</td></tr>
+        <tr><td>Static</td><td>1</td></tr>
+        <tr><td>eBGP</td><td>20</td></tr>
+        <tr><td>EIGRP (internal)</td><td>90</td></tr>
+        <tr><td>OSPF</td><td>110</td></tr>
+        <tr><td>IS-IS</td><td>115</td></tr>
+        <tr><td>RIP</td><td>120</td></tr>
+        <tr><td>EIGRP (external)</td><td>170</td></tr>
+        <tr><td>iBGP</td><td>200</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SWITCHING & STP -->
+<!-- ============================================================ -->
+<section id="switching">
+  <div class="section-header">
+    <span class="section-num">14</span>
+    <h2>SWITCHING & VLANs</h2>
+  </div>
+
+  <h3>Switch vs Hub vs Router</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Device</th><th>Layer</th><th>Intelligence</th><th>Domain</th></tr></thead>
+      <tbody>
+        <tr><td>Hub</td><td>1</td><td>None — flood all ports</td><td>Single collision + broadcast domain</td></tr>
+        <tr><td>Switch</td><td>2</td><td>MAC table — unicast forwarding</td><td>Per-port collision domain, single broadcast domain</td></tr>
+        <tr><td>Router</td><td>3</td><td>Routing table — IP forwarding</td><td>Separate broadcast domains</td></tr>
+        <tr><td>L3 Switch</td><td>2+3</td><td>ASIC hardware routing</td><td>Wire-speed inter-VLAN routing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>MAC Address Table & CAM Table</h3>
+  <p>Switches learn source MAC addresses and associate them with ports. On unknown destination MAC: <strong>flood</strong> all ports. CAM table entries age out (default 300s). CAM table overflow attack: flood with fake MACs → table fills → switch acts like hub → sniff traffic. Mitigated by <strong>port security</strong> (limit MACs per port).</p>
+
+  <h3>Switch Forwarding Modes</h3>
+  <ul class="neat">
+    <li><strong>Store-and-Forward</strong> — receive entire frame, check FCS, then forward. Most reliable. Higher latency.</li>
+    <li><strong>Cut-Through</strong> — forward after reading just destination MAC (14 bytes). Lowest latency. Propagates corrupt frames.</li>
+    <li><strong>Fragment-Free</strong> — forward after reading 64 bytes (minimum Ethernet frame). Balance between above two.</li>
+  </ul>
+</section>
+
+<section id="stp">
+  <div class="section-header">
+    <span class="section-num">15</span>
+    <h2>STP & REDUNDANCY</h2>
+  </div>
+
+  <h3>Spanning Tree Protocol (802.1D)</h3>
+  <p>Prevents Layer 2 loops by blocking redundant paths. Creates a loop-free tree.</p>
+  <pre>
+1. Elect Root Bridge (lowest Bridge ID = Priority + MAC)
+2. Each non-root switch elects Root Port (lowest cost to root)
+3. Each segment elects Designated Port (lowest cost to root)
+4. All other ports → Blocking
+
+Port States: Blocking(20s) → Listening(15s) → Learning(15s) → Forwarding
+Total convergence: ~50 seconds (problematic!)</pre>
+
+  <h3>RSTP (Rapid STP, 802.1w)</h3>
+  <p>Faster convergence (~1-2s). New port roles: Alternate (backup for root port), Backup (backup for designated). Proposal/Agreement mechanism replaces listening/learning delays. Backward compatible with 802.1D.</p>
+
+  <h3>MSTP (Multiple STP, 802.1s)</h3>
+  <p>Maps multiple VLANs to multiple STP instances. Allows load balancing across redundant links per VLAN.</p>
+
+  <h3>PVST+ & Rapid PVST+</h3>
+  <p>Cisco proprietary: separate STP instance per VLAN. Allows different root bridges per VLAN for load balancing.</p>
+
+  <h3>Etherchannel / LAG / LACP</h3>
+  <p>Bundles multiple physical links into a single logical link. STP sees it as one port (no blocking). LACP (802.3ad) is the standard negotiation protocol. PAgP is Cisco proprietary.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SESSION & PRESENTATION -->
+<!-- ============================================================ -->
+<section id="session">
+  <div class="section-header">
+    <span class="section-num">16</span>
+    <h2>SESSION & PRESENTATION LAYER</h2>
+  </div>
+
+  <h3>Session Layer (L5)</h3>
+  <p>Manages sessions: establishment, maintenance, synchronisation, and termination. Provides checkpoints (sync points) so large transfers can resume after failure. Protocols: NetBIOS, RPC, NFS, SMB (partially), SIP.</p>
+
+  <h3>Presentation Layer (L6)</h3>
+  <p>Handles data representation, encryption, compression, and character encoding. Ensures data sent by one system is readable by another. Examples: SSL/TLS encryption happens here, JPEG/MPEG compression, ASCII/Unicode translation, XDR (External Data Representation for RPC).</p>
+
+  <div class="callout callout-info">
+    In practice, the TCP/IP model merges L5, L6, L7 into the Application layer. Modern frameworks (TLS, HTTP/2) handle these concerns within the application protocol.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- APPLICATION LAYER -->
+<!-- ============================================================ -->
+<section id="appLayer">
+  <div class="section-header">
+    <span class="section-num">17</span>
+    <h2>APPLICATION LAYER</h2>
+  </div>
+
+  <h3>Key Application Layer Protocols</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Protocol</th><th>Port</th><th>Transport</th><th>Function</th></tr></thead>
+      <tbody>
+        <tr><td>HTTP</td><td>80</td><td>TCP</td><td>Web — stateless request/response</td></tr>
+        <tr><td>HTTPS</td><td>443</td><td>TCP (TLS)</td><td>Encrypted HTTP</td></tr>
+        <tr><td>FTP</td><td>21 (cmd), 20 (data)</td><td>TCP</td><td>File transfer — active & passive modes</td></tr>
+        <tr><td>SFTP</td><td>22</td><td>TCP (SSH)</td><td>Secure file transfer over SSH</td></tr>
+        <tr><td>SSH</td><td>22</td><td>TCP</td><td>Encrypted remote shell</td></tr>
+        <tr><td>Telnet</td><td>23</td><td>TCP</td><td>Unencrypted remote shell (deprecated)</td></tr>
+        <tr><td>SMTP</td><td>25 / 587 (submission)</td><td>TCP</td><td>Send email</td></tr>
+        <tr><td>IMAP</td><td>143 / 993 (SSL)</td><td>TCP</td><td>Receive email (leaves copy on server)</td></tr>
+        <tr><td>POP3</td><td>110 / 995 (SSL)</td><td>TCP</td><td>Receive email (downloads + deletes)</td></tr>
+        <tr><td>DNS</td><td>53</td><td>UDP/TCP</td><td>Name resolution</td></tr>
+        <tr><td>DHCP</td><td>67/68</td><td>UDP</td><td>IP configuration</td></tr>
+        <tr><td>SNMP</td><td>161 (agent) / 162 (trap)</td><td>UDP</td><td>Network management</td></tr>
+        <tr><td>NTP</td><td>123</td><td>UDP</td><td>Time synchronization</td></tr>
+        <tr><td>TFTP</td><td>69</td><td>UDP</td><td>Trivial FTP (no auth, simple devices)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- HTTP EVOLUTION -->
+<!-- ============================================================ -->
+<section id="http">
+  <div class="section-header">
+    <span class="section-num">18</span>
+    <h2>HTTP / 1.1 → HTTP / 3</h2>
+  </div>
+
+  <h3>HTTP/1.0 vs HTTP/1.1</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>HTTP/1.0</th><th>HTTP/1.1</th></tr></thead>
+      <tbody>
+        <tr><td>Connection</td><td>New TCP per request</td><td>Persistent (keep-alive default)</td></tr>
+        <tr><td>Pipelining</td><td>No</td><td>Yes (but head-of-line blocking)</td></tr>
+        <tr><td>Host header</td><td>Optional</td><td>Required (enables virtual hosting)</td></tr>
+        <tr><td>Chunked Transfer</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Caching</td><td>Basic</td><td>ETag, Cache-Control, conditional GET</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>HTTP/2</h3>
+  <ul class="neat">
+    <li><strong>Binary framing</strong> — replaces text. More efficient to parse.</li>
+    <li><strong>Multiplexing</strong> — multiple requests over single TCP connection simultaneously (no HOL blocking at HTTP layer)</li>
+    <li><strong>Stream prioritization</strong> — clients can weight and depend streams</li>
+    <li><strong>HPACK header compression</strong> — static + dynamic table; Huffman encoding</li>
+    <li><strong>Server Push</strong> — server proactively sends resources client will need</li>
+    <li><strong>TCP HOL blocking still exists</strong> — if a TCP segment is lost, all streams stall</li>
+  </ul>
+
+  <h3>HTTP/3 (QUIC-based)</h3>
+  <ul class="neat">
+    <li>Runs over <strong>QUIC</strong> (UDP-based transport protocol from Google)</li>
+    <li><strong>0-RTT connection setup</strong> — subsequent connections resume with 0 round trips</li>
+    <li><strong>Independent streams</strong> — loss in one stream doesn't block others (TCP HOL blocking eliminated)</li>
+    <li><strong>Connection migration</strong> — connection ID instead of 4-tuple; survives IP change (WiFi → cellular)</li>
+    <li><strong>Mandatory TLS 1.3</strong> — security built into QUIC itself</li>
+    <li>Uses <strong>UDP port 443</strong></li>
+  </ul>
+
+  <h3>HTTP Status Codes</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Code</th><th>Category</th><th>Key Examples</th></tr></thead>
+      <tbody>
+        <tr><td>1xx</td><td>Informational</td><td>100 Continue, 101 Switching Protocols</td></tr>
+        <tr><td>2xx</td><td>Success</td><td>200 OK, 201 Created, 204 No Content, 206 Partial Content</td></tr>
+        <tr><td>3xx</td><td>Redirection</td><td>301 Moved Permanently, 302 Found, 304 Not Modified, 307 Temporary Redirect, 308 Permanent Redirect</td></tr>
+        <tr><td>4xx</td><td>Client Error</td><td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 405 Method Not Allowed, 408 Timeout, 409 Conflict, 429 Too Many Requests</td></tr>
+        <tr><td>5xx</td><td>Server Error</td><td>500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable, 504 Gateway Timeout</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>HTTP Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Idempotent</th><th>Safe</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>GET</td><td>Yes</td><td>Yes</td><td>Retrieve resource</td></tr>
+        <tr><td>POST</td><td>No</td><td>No</td><td>Create/submit data</td></tr>
+        <tr><td>PUT</td><td>Yes</td><td>No</td><td>Replace resource entirely</td></tr>
+        <tr><td>PATCH</td><td>No*</td><td>No</td><td>Partial update</td></tr>
+        <tr><td>DELETE</td><td>Yes</td><td>No</td><td>Delete resource</td></tr>
+        <tr><td>HEAD</td><td>Yes</td><td>Yes</td><td>GET without body (headers only)</td></tr>
+        <tr><td>OPTIONS</td><td>Yes</td><td>Yes</td><td>CORS preflight; list supported methods</td></tr>
+        <tr><td>CONNECT</td><td>No</td><td>No</td><td>Tunnel (HTTPS through proxy)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- WEBSOCKETS & gRPC -->
+<!-- ============================================================ -->
+<section id="websockets">
+  <div class="section-header">
+    <span class="section-num">19</span>
+    <h2>WEBSOCKETS & gRPC</h2>
+  </div>
+
+  <h3>WebSockets</h3>
+  <p>Full-duplex communication channel over a single TCP connection. Initiated via HTTP Upgrade:</p>
+  <pre>
+GET /chat HTTP/1.1
+Host: server.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==   ← random base64
+Sec-WebSocket-Version: 13
+
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=  ← SHA-1(key + GUID)</pre>
+  <p>After upgrade, both sides can send frames anytime. Frame types: text, binary, ping, pong, close. Used in: live chat, real-time dashboards, multiplayer games, trading.</p>
+
+  <h3>gRPC</h3>
+  <p>Google's RPC framework. Uses HTTP/2 for transport and <strong>Protocol Buffers (protobuf)</strong> for serialization. More efficient than REST+JSON: binary format, schema-driven, streaming support.</p>
+  <pre>
+// .proto definition
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc SayHelloStream (HelloRequest) returns (stream HelloReply); // server streaming
+}
+
+4 communication patterns:
+  1. Unary (req → resp)
+  2. Server streaming (req → stream of resp)
+  3. Client streaming (stream of req → resp)
+  4. Bidirectional streaming (stream ↔ stream)</pre>
+
+  <h3>SSE (Server-Sent Events)</h3>
+  <p>One-directional: server → client over HTTP. Client opens a GET request; server streams <code>text/event-stream</code>. Simpler than WebSockets for server-push use cases. Auto-reconnect built-in. Used by Claude, ChatGPT for token streaming.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- EMAIL PROTOCOLS -->
+<!-- ============================================================ -->
+<section id="email-proto">
+  <div class="section-header">
+    <span class="section-num">20</span>
+    <h2>EMAIL PROTOCOLS</h2>
+  </div>
+
+  <h3>SMTP Flow</h3>
+  <pre>
+MUA (Mail User Agent) → MSA (port 587) → MTA → MTA (DNS MX lookup) → MDA → MUA
+           Outlook/Thunderbird → ISP mail server → internet → recipient server → IMAP/POP3</pre>
+
+  <h3>Email Authentication</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Mechanism</th><th>How It Works</th><th>DNS Record</th></tr></thead>
+      <tbody>
+        <tr><td>SPF</td><td>Lists IPs authorized to send for domain</td><td>TXT record</td></tr>
+        <tr><td>DKIM</td><td>Email signed with private key; receiver verifies with public key in DNS</td><td>TXT record at selector._domainkey</td></tr>
+        <tr><td>DMARC</td><td>Policy: what to do if SPF/DKIM fail (quarantine/reject). Reports sent back.</td><td>TXT _dmarc record</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- QoS -->
+<!-- ============================================================ -->
+<section id="qos">
+  <div class="section-header">
+    <span class="section-num">21</span>
+    <h2>QoS — QUALITY OF SERVICE</h2>
+  </div>
+
+  <p>Mechanisms to prioritize certain traffic types, ensure bandwidth guarantees, and reduce latency/jitter for sensitive applications (VoIP, video conferencing).</p>
+
+  <h3>QoS Models</h3>
+  <div class="grid-3">
+    <div class="card"><div class="card-title">Best Effort</div><p style="font-size:0.82rem;margin:0">No guarantees. All traffic treated equally. Default internet model.</p></div>
+    <div class="card"><div class="card-title">IntServ (RSVP)</div><p style="font-size:0.82rem;margin:0">Per-flow reservations. RSVP signals bandwidth needs. Doesn't scale to large networks.</p></div>
+    <div class="card"><div class="card-title">DiffServ</div><p style="font-size:0.82rem;margin:0">Traffic classes using DSCP bits in IP header. Scalable. Per-hop behaviour (PHB).</p></div>
+  </div>
+
+  <h3>DSCP (Differentiated Services Code Point)</h3>
+  <p>6-bit field in IP header (in DSCP/ECN byte). Per-Hop Behaviors:</p>
+  <ul class="neat">
+    <li><strong>EF (Expedited Forwarding) — DSCP 46</strong>: Low latency/loss/jitter. VoIP, real-time video.</li>
+    <li><strong>AF (Assured Forwarding) — AFxy</strong>: 4 classes (AF1x–AF4x) × 3 drop precedences. Business apps.</li>
+    <li><strong>CS (Class Selector)</strong>: CS0 (best effort) to CS7 (network control)</li>
+    <li><strong>Default (DSCP 0)</strong>: Best effort</li>
+  </ul>
+
+  <h3>Queuing Mechanisms</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Algorithm</th><th>How It Works</th><th>Best For</th></tr></thead>
+      <tbody>
+        <tr><td>FIFO</td><td>First in, first out. Simple.</td><td>Low-traffic links</td></tr>
+        <tr><td>PQ (Priority Queuing)</td><td>High-priority always served first</td><td>Strict latency needs; can starve lower priority</td></tr>
+        <tr><td>WFQ (Weighted Fair Queuing)</td><td>Flows weighted by IP precedence; fair share</td><td>Default on most Cisco interfaces < 2Mbps</td></tr>
+        <tr><td>CBWFQ</td><td>User-defined classes with bandwidth guarantees</td><td>Enterprise QoS</td></tr>
+        <tr><td>LLQ</td><td>CBWFQ + strict priority queue for real-time traffic</td><td>VoIP + data on same link</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Traffic Shaping vs Policing</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Traffic Shaping</div><p style="font-size:0.83rem;margin:0">Buffers excess traffic to conform to rate. Smooths bursts. Increases latency. Used outbound.</p></div>
+    <div class="card"><div class="card-title">Traffic Policing</div><p style="font-size:0.83rem;margin:0">Drops or re-marks excess traffic. No buffering. Immediate enforcement. Used inbound/outbound.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SDN & NFV -->
+<!-- ============================================================ -->
+<section id="sdn">
+  <div class="section-header">
+    <span class="section-num">22</span>
+    <h2>SDN & NFV</h2>
+  </div>
+
+  <h3>Software-Defined Networking</h3>
+  <p>Decouples the <strong>control plane</strong> (routing decisions) from the <strong>data plane</strong> (packet forwarding). A centralised SDN controller has a global view of the network and programs forwarding rules via southbound APIs (OpenFlow, NETCONF, gRPC).</p>
+  <pre>
+┌─────────────────────────────────┐
+│  Applications (North Bound API) │  ← REST, Intent-based APIs
+├─────────────────────────────────┤
+│     SDN Controller (Control)    │  ← OpenDaylight, ONOS, Ryu
+├─────────────────────────────────┤
+│  Data Plane (Switches/Routers)  │  ← OpenFlow, P4 switches
+└─────────────────────────────────┘</pre>
+
+  <h3>OpenFlow</h3>
+  <p>First SDN southbound protocol. Controller installs flow table entries in switches. Each entry = match fields (IP, port, MAC) + actions (forward, drop, modify, send to controller).</p>
+
+  <h3>P4 (Programming Protocol-Independent Packet Processors)</h3>
+  <p>Language to define custom packet processing pipelines in the data plane itself. More flexible than OpenFlow. Used in SmartNICs, programmable ASICs, hyperscaler networks.</p>
+
+  <h3>NFV (Network Function Virtualization)</h3>
+  <p>Runs network functions (firewalls, load balancers, IDS, NAT, WAN optimization) as software on commodity x86 servers instead of dedicated hardware. Managed by NFV orchestrator (MANO). Key standards: ETSI NFV-MANO, OpenStack, Kubernetes.</p>
+
+  <h3>VXLAN (Virtual Extensible LAN)</h3>
+  <p>Overlay network protocol encapsulating Layer 2 Ethernet frames in UDP (port 4789). Extends VLANs across Layer 3 boundaries. 24-bit VNI (VXLAN Network Identifier) → 16M segments vs VLAN's 4094. Used in VMware NSX, OpenStack Neutron, AWS VPC.</p>
+
+  <pre>
+Outer Ethernet | Outer IP | Outer UDP (4789) | VXLAN Header (VNI 24b) | Inner Ethernet Frame</pre>
+</section>
+
+<!-- ============================================================ -->
+<!-- MPLS -->
+<!-- ============================================================ -->
+<section id="mpls">
+  <div class="section-header">
+    <span class="section-num">23</span>
+    <h2>MPLS</h2>
+  </div>
+
+  <p><strong>Multiprotocol Label Switching</strong> — packets forwarded based on short fixed-length labels rather than IP lookups. Faster, supports TE (Traffic Engineering) and VPNs.</p>
+
+  <h3>MPLS Label Stack</h3>
+  <pre>
+| Ethernet | MPLS Label (32b) | IP Header | Payload |
+            ↑
+Label (20b) | EXP/TC (3b) | S (1b, bottom of stack) | TTL (8b)</pre>
+
+  <h3>MPLS Terminology</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>LER (Label Edge Router)</td><td>Ingress: pushes label. Egress: pops label (PHP).</td></tr>
+        <tr><td>LSR (Label Switching Router)</td><td>Core routers — swap labels and forward</td></tr>
+        <tr><td>LSP (Label Switched Path)</td><td>Pre-established path through MPLS network</td></tr>
+        <tr><td>FEC (Forwarding Equivalence Class)</td><td>Group of packets forwarded the same way</td></tr>
+        <tr><td>LDP / RSVP-TE</td><td>Label distribution protocols</td></tr>
+        <tr><td>PHP (Penultimate Hop Popping)</td><td>Second-to-last LSR pops label so egress LER does only IP lookup</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>MPLS VPNs (L3VPN)</h3>
+  <p>Customer sites connected as if on private network. PE routers use VRFs (Virtual Routing and Forwarding tables) to separate customer routes. Uses MP-BGP to distribute VPN routes with Route Distinguishers (RD) and Route Targets (RT).</p>
+
+  <h3>Segment Routing (SR-MPLS / SRv6)</h3>
+  <p>Modern evolution of MPLS TE. Source encodes entire path as stack of segment IDs (SIDs). No per-flow state in network. SR-MPLS uses MPLS label stack; SRv6 uses IPv6 extension headers. Simplifies MPLS TE and enables Intent-Based Networking.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- WIRELESS -->
+<!-- ============================================================ -->
+<section id="wireless">
+  <div class="section-header">
+    <span class="section-num">24</span>
+    <h2>WIRELESS & WiFi</h2>
+  </div>
+
+  <h3>802.11 Standards Evolution</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Standard</th><th>Name</th><th>Freq</th><th>Max Speed</th><th>Key Tech</th></tr></thead>
+      <tbody>
+        <tr><td>802.11b</td><td>WiFi 1</td><td>2.4GHz</td><td>11 Mbps</td><td>DSSS</td></tr>
+        <tr><td>802.11a</td><td>WiFi 2</td><td>5GHz</td><td>54 Mbps</td><td>OFDM</td></tr>
+        <tr><td>802.11g</td><td>WiFi 3</td><td>2.4GHz</td><td>54 Mbps</td><td>OFDM</td></tr>
+        <tr><td>802.11n</td><td>WiFi 4</td><td>2.4/5GHz</td><td>600 Mbps</td><td>MIMO, 40MHz channels</td></tr>
+        <tr><td>802.11ac</td><td>WiFi 5</td><td>5GHz</td><td>6.9 Gbps</td><td>MU-MIMO, 160MHz, 256-QAM</td></tr>
+        <tr><td>802.11ax</td><td>WiFi 6/6E</td><td>2.4/5/6GHz</td><td>9.6 Gbps</td><td>OFDMA, MU-MIMO (up/down), BSS Coloring, TWT</td></tr>
+        <tr><td>802.11be</td><td>WiFi 7</td><td>2.4/5/6GHz</td><td>46 Gbps</td><td>Multi-Link Operation, 4096-QAM, 320MHz</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>WiFi Security Protocols</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Protocol</th><th>Encryption</th><th>Integrity</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>WEP</td><td>RC4</td><td>CRC-32</td><td>Broken — do not use</td></tr>
+        <tr><td>WPA (TKIP)</td><td>RC4 + TKIP</td><td>MIC (Michael)</td><td>Deprecated</td></tr>
+        <tr><td>WPA2 (CCMP)</td><td>AES-128 CTR</td><td>CMAC (CBC-MAC)</td><td>Still widely used</td></tr>
+        <tr><td>WPA3-Personal</td><td>AES-128</td><td>—</td><td>SAE replaces PSK handshake; forward secrecy</td></tr>
+        <tr><td>WPA3-Enterprise</td><td>AES-256 / GCMP-256</td><td>HMAC-SHA-384</td><td>192-bit security mode</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>WiFi Key Attack Vectors</h3>
+  <ul class="neat">
+    <li><strong>KRACK (Key Reinstallation Attack)</strong> — replays handshake messages to force nonce reuse in WPA2 CCMP. Patched by most vendors.</li>
+    <li><strong>Dragonblood</strong> — side-channel attacks on WPA3 SAE handshake. Mostly patched.</li>
+    <li><strong>Evil Twin / Deauth attack</strong> — rogue AP + 802.11 deauth frames (Management Frame Protection / 802.11w mitigates).</li>
+    <li><strong>PMKID attack</strong> — offline dictionary attack against WPA2 without completing full 4-way handshake.</li>
+  </ul>
+
+  <h3>OFDMA in WiFi 6</h3>
+  <p>WiFi 6 introduces OFDMA which divides a channel into <strong>Resource Units (RUs)</strong>, allowing the AP to schedule transmissions from multiple clients simultaneously in the same channel — unlike WiFi 5 which serves one client per transmission. Greatly improves dense deployment performance.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- NETWORK SECURITY -->
+<!-- ============================================================ -->
+<section id="security">
+  <div class="section-header">
+    <span class="section-num">25</span>
+    <h2>NETWORK SECURITY</h2>
+  </div>
+
+  <h3>Common Attack Types</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Attack</th><th>Description</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td>SYN Flood</td><td>Half-open TCP connections exhaust server resources</td><td>SYN cookies, rate limiting, firewalls</td></tr>
+        <tr><td>DDoS</td><td>Volumetric/amplification attacks; botnets</td><td>Anycast scrubbing, BCP38, RTBH</td></tr>
+        <tr><td>DNS Amplification</td><td>Forged DNS queries → large responses to victim</td><td>BCP38 (anti-spoofing), response rate limiting</td></tr>
+        <tr><td>ARP Poisoning</td><td>Fake ARP replies → MiTM on LAN</td><td>Dynamic ARP Inspection (DAI), 802.1X</td></tr>
+        <tr><td>VLAN Hopping</td><td>Switch spoofing / double-tagging to reach another VLAN</td><td>Disable DTP, explicit trunk config, change native VLAN</td></tr>
+        <tr><td>ICMP Redirect</td><td>Attacker tells host to use attacker as gateway</td><td>Disable ICMP redirects on hosts</td></tr>
+        <tr><td>BGP Hijacking</td><td>Malicious AS announces victim's prefixes</td><td>RPKI + ROA, BGPsec, route filtering</td></tr>
+        <tr><td>IP Spoofing</td><td>Forge source IP to bypass filters / amplify attacks</td><td>BCP38 — ISPs filter non-customer source IPs</td></tr>
+        <tr><td>DHCP Starvation</td><td>Exhaust DHCP pool with fake MACs → DoS</td><td>DHCP Snooping, port security</td></tr>
+        <tr><td>Rogue DHCP</td><td>Attacker runs DHCP server, gives malicious gateway/DNS</td><td>DHCP Snooping (trust only legit ports)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Zero Trust Networking</h3>
+  <p>"Never trust, always verify." Principles: micro-segmentation, least privilege, continuous authentication, assume breach. Implemented via identity-aware proxies (BeyondCorp, Zscaler), service mesh (Istio with mTLS), SASE (Secure Access Service Edge).</p>
+
+  <h3>IPSec</h3>
+  <p>Suite of protocols for Layer 3 encryption and authentication. Two modes:</p>
+  <ul class="neat">
+    <li><strong>Transport mode</strong> — encrypts/authenticates only payload; IP header unchanged. Used host-to-host.</li>
+    <li><strong>Tunnel mode</strong> — entire IP packet encrypted; new IP header added. Used in VPNs (site-to-site).</li>
+    <li><strong>AH (Authentication Header)</strong> — integrity + anti-replay. No encryption. Protocol 51.</li>
+    <li><strong>ESP (Encapsulating Security Payload)</strong> — encryption + integrity + anti-replay. Protocol 50.</li>
+    <li><strong>IKE (Internet Key Exchange)</strong> — IPSec key negotiation. IKEv1 uses UDP 500. IKEv2 is simpler and more secure.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- TLS -->
+<!-- ============================================================ -->
+<section id="tls">
+  <div class="section-header">
+    <span class="section-num">26</span>
+    <h2>TLS / SSL DEEP DIVE</h2>
+  </div>
+
+  <h3>TLS 1.2 Handshake</h3>
+  <pre>
+Client                                Server
+  │── ClientHello (supported ciphers, random C) ──▶│
+  │◀── ServerHello (chosen cipher, random S) ───────│
+  │◀── Certificate (X.509) ────────────────────────│
+  │◀── ServerHelloDone ─────────────────────────────│
+  │── ClientKeyExchange (pre-master secret, RSA/DHE)▶│
+  │── ChangeCipherSpec ───────────────────────────▶│
+  │── Finished (HMAC of all handshake messages) ──▶│
+  │◀── ChangeCipherSpec ───────────────────────────│
+  │◀── Finished ────────────────────────────────────│
+  │         [Application Data — encrypted]          │</pre>
+
+  <h3>TLS 1.3 Improvements</h3>
+  <ul class="neat">
+    <li><strong>1-RTT handshake</strong> (vs 2-RTT in TLS 1.2)</li>
+    <li><strong>0-RTT resumption</strong> — client sends application data immediately on reconnect (with replay risk)</li>
+    <li><strong>Removed weak algorithms:</strong> RSA key exchange, MD5, SHA-1, RC4, DES, 3DES, CBC mode ciphers</li>
+    <li><strong>Forward Secrecy mandatory</strong> — only (EC)DHE key exchange allowed</li>
+    <li><strong>Encrypted handshake</strong> — certificates encrypted; SNI and ALPN visible but certificate hidden</li>
+    <li>Cipher suites: TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256</li>
+  </ul>
+
+  <h3>Certificate Chain & PKI</h3>
+  <pre>
+Root CA (self-signed, stored in OS/browser trust store)
+  └── Intermediate CA (signed by Root)
+        └── End-Entity Certificate (signed by Intermediate)
+              Contains: Subject, Issuer, SANs, Public Key, Validity, Extensions, Signature</pre>
+
+  <h3>Certificate Transparency (CT)</h3>
+  <p>All publicly-trusted certificates must be logged in public append-only CT logs. Browsers check for SCTs (Signed Certificate Timestamps). Prevents misissued/malicious certificates from going undetected.</p>
+
+  <h3>HSTS (HTTP Strict Transport Security)</h3>
+  <p>Server sends <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. Browser refuses to connect over HTTP for the specified duration. Preload lists baked into browsers.</p>
+
+  <h3>SNI (Server Name Indication)</h3>
+  <p>TLS extension that lets client specify hostname during handshake, before certificate is sent. Enables multiple TLS certificates on same IP. Visible in plaintext in TLS 1.2/1.3 (ECH — Encrypted Client Hello aims to fix this).</p>
+
+  <h3>OCSP & CRL</h3>
+  <ul class="neat">
+    <li><strong>CRL (Certificate Revocation List)</strong> — CA publishes list of revoked serial numbers. Can be large; periodic updates.</li>
+    <li><strong>OCSP (Online Certificate Status Protocol)</strong> — real-time query for single cert status. Privacy risk (CA sees who connects where).</li>
+    <li><strong>OCSP Stapling</strong> — server fetches and caches OCSP response, staples it to TLS handshake. No privacy/latency issue.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- FIREWALL & IDS -->
+<!-- ============================================================ -->
+<section id="firewall">
+  <div class="section-header">
+    <span class="section-num">27</span>
+    <h2>FIREWALLS & IDS/IPS</h2>
+  </div>
+
+  <h3>Firewall Types</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Operates At</th><th>Inspects</th><th>State Tracking</th></tr></thead>
+      <tbody>
+        <tr><td>Packet Filter</td><td>L3/L4</td><td>IP src/dst, ports, protocol</td><td>No (stateless)</td></tr>
+        <tr><td>Stateful Firewall</td><td>L3/L4</td><td>Connection state (SYN/ACK sequence)</td><td>Yes</td></tr>
+        <tr><td>Application (Proxy)</td><td>L7</td><td>Full protocol decode (HTTP, DNS)</td><td>Yes</td></tr>
+        <tr><td>NGFW</td><td>L7</td><td>App ID, user ID, SSL inspection, threat intelligence</td><td>Yes</td></tr>
+        <tr><td>WAF</td><td>L7 (HTTP)</td><td>SQLi, XSS, OWASP Top 10</td><td>Yes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>DMZ Architecture</h3>
+  <pre>
+Internet ── [Firewall 1] ── DMZ (Web/Mail servers) ── [Firewall 2] ── Internal LAN
+                            Public-facing servers have limited access to internal network.</pre>
+
+  <h3>IDS vs IPS</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">IDS — Intrusion Detection System</div><p style="font-size:0.83rem;margin:0"><strong>Passive.</strong> Monitors and alerts. Out-of-band (copy of traffic). No blocking. Lower risk of false positives causing outages.</p></div>
+    <div class="card"><div class="card-title">IPS — Intrusion Prevention System</div><p style="font-size:0.83rem;margin:0"><strong>Active.</strong> Inline, blocks malicious traffic. Can cause false-positive outages. Signature + anomaly + behavioral detection.</p></div>
+  </div>
+
+  <h3>Network Access Control (NAC / 802.1X)</h3>
+  <p>Controls which devices can join the network. Components: Supplicant (client), Authenticator (switch/AP), Authentication Server (RADIUS/LDAP). EAP variants: EAP-TLS (cert-based), PEAP (password in TLS tunnel), EAP-FAST.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- PERFORMANCE -->
+<!-- ============================================================ -->
+<section id="performance">
+  <div class="section-header">
+    <span class="section-num">28</span>
+    <h2>NETWORK METRICS & PERFORMANCE</h2>
+  </div>
+
+  <h3>Key Metrics</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Metric</th><th>Definition</th><th>Relevance</th></tr></thead>
+      <tbody>
+        <tr><td>Bandwidth</td><td>Maximum data rate of a link (bps)</td><td>Capacity ceiling</td></tr>
+        <tr><td>Throughput</td><td>Actual data rate achieved</td><td>Real performance</td></tr>
+        <tr><td>Latency / RTT</td><td>Time for packet + ACK to return</td><td>Interactive applications</td></tr>
+        <tr><td>Jitter</td><td>Variance in latency between packets</td><td>VoIP, video; mitigated by playout buffer</td></tr>
+        <tr><td>Packet Loss</td><td>% of packets dropped</td><td>>1% degrades TCP badly; UDP apps drop quality</td></tr>
+        <tr><td>BDP</td><td>Bandwidth × Delay Product</td><td>TCP window must be ≥ BDP for full utilization</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="formula">BDP = Bandwidth (bps) × RTT (s) &nbsp;&nbsp;&nbsp; Example: 1Gbps × 100ms = 12.5 MB needed in flight</div>
+
+  <h3>Little's Law (Queuing Theory)</h3>
+  <div class="formula">L = λ × W &nbsp;&nbsp;&nbsp; L = avg items in system, λ = arrival rate, W = avg time in system</div>
+
+  <h3>Propagation vs Transmission Delay</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Delay Type</th><th>Formula</th><th>Cause</th></tr></thead>
+      <tbody>
+        <tr><td>Propagation</td><td>Distance / Speed_of_light_in_medium</td><td>Physical distance; ~2×10⁸ m/s in fiber</td></tr>
+        <tr><td>Transmission</td><td>Packet_size / Link_bandwidth</td><td>Time to push packet bits onto wire</td></tr>
+        <tr><td>Processing</td><td>Variable</td><td>Router lookup, header parsing</td></tr>
+        <tr><td>Queuing</td><td>Variable</td><td>Time in buffer waiting to be transmitted</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Bufferbloat</h3>
+  <p>Large buffers in routers/cable modems cause excessive queuing delay without signaling congestion to TCP. RTT balloons from ~10ms to >1000ms. Solution: <strong>AQM (CoDel, FQ-CoDel)</strong> + smaller buffers.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- CDN & LOAD BALANCING -->
+<!-- ============================================================ -->
+<section id="cdn">
+  <div class="section-header">
+    <span class="section-num">29</span>
+    <h2>CDN & LOAD BALANCING</h2>
+  </div>
+
+  <h3>CDN (Content Delivery Network)</h3>
+  <p>Geographically distributed servers (PoPs — Points of Presence) that cache content close to users. Reduces latency, offloads origin. DNS-based or anycast routing directs users to nearest PoP.</p>
+
+  <h3>Load Balancing Algorithms</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Algorithm</th><th>How It Works</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>Round Robin</td><td>Distribute sequentially across servers</td><td>Equal servers, stateless apps</td></tr>
+        <tr><td>Weighted RR</td><td>Higher-capacity servers get more requests</td><td>Heterogeneous servers</td></tr>
+        <tr><td>Least Connections</td><td>Route to server with fewest active connections</td><td>Long-lived connections</td></tr>
+        <tr><td>IP Hash</td><td>Hash source IP → same server always</td><td>Session persistence (sticky sessions)</td></tr>
+        <tr><td>Least Response Time</td><td>Fastest responding server</td><td>Latency-sensitive apps</td></tr>
+        <tr><td>Random with 2 choices</td><td>Pick 2 random servers, take least loaded</td><td>Large distributed systems (power of two choices)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>L4 vs L7 Load Balancer</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">L4 (Transport Layer)</div><p style="font-size:0.83rem;margin:0">Routes based on TCP/UDP port and IP. Doesn't inspect payload. Very fast; no TLS termination. Example: AWS NLB.</p></div>
+    <div class="card"><div class="card-title">L7 (Application Layer)</div><p style="font-size:0.83rem;margin:0">Routes based on HTTP headers, URL, cookies. TLS termination. Can do content-based routing, A/B testing. Example: AWS ALB, nginx.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ERROR DETECTION -->
+<!-- ============================================================ -->
+<section id="errors">
+  <div class="section-header">
+    <span class="section-num">30</span>
+    <h2>ERROR DETECTION & CORRECTION</h2>
+  </div>
+
+  <h3>Parity Bits</h3>
+  <p>Single parity bit: detects 1-bit errors, cannot correct. Even parity: total 1s even. Odd parity: total 1s odd. Two-dimensional parity can detect and correct single-bit errors.</p>
+
+  <h3>CRC (Cyclic Redundancy Check)</h3>
+  <p>Polynomial division of data treated as binary polynomial. Appended CRC remainder allows receiver to detect burst errors. CRC-32 (Ethernet, ZIP, PNG): detects all burst errors ≤ 32 bits. CRC-16: serial protocols.</p>
+
+  <h3>Checksum (IP/TCP/UDP)</h3>
+  <p>One's complement sum of 16-bit words. Simple and fast. Weaker than CRC (doesn't detect certain multi-bit errors). IP header checksum recalculated at each hop (TTL change).</p>
+
+  <h3>Hamming Code</h3>
+  <p>Error correcting code. Parity bits at positions 2⁰, 2¹, 2², … (1, 2, 4, 8, …). Can detect 2-bit errors and correct 1-bit errors. SECDED (Single Error Correct, Double Error Detect) adds an extra parity bit. Used in ECC memory.</p>
+
+  <div class="formula">For m data bits: need r parity bits where 2^r ≥ m + r + 1</div>
+
+  <h3>Forward Error Correction (FEC)</h3>
+  <p>Receiver corrects errors without retransmission. Used in lossy links, satellite, storage, 5G. Examples:</p>
+  <ul class="neat">
+    <li><strong>Reed-Solomon</strong> — used in CDs, DVDs, QR codes, deep-space comms</li>
+    <li><strong>LDPC (Low-Density Parity Check)</strong> — near Shannon capacity, used in 10GbE, WiFi 6, 5G NR</li>
+    <li><strong>Turbo Codes</strong> — used in 3G/4G LTE</li>
+    <li><strong>Polar Codes</strong> — 5G control channel</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- TRANSMISSION MEDIA -->
+<!-- ============================================================ -->
+<section id="media">
+  <div class="section-header">
+    <span class="section-num">31</span>
+    <h2>TRANSMISSION MEDIA</h2>
+  </div>
+
+  <h3>Guided Media</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Medium</th><th>Bandwidth</th><th>Max Distance</th><th>Interference</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Cat 5e</td><td>1 Gbps</td><td>100m</td><td>EMI susceptible</td><td>UTP — 100Base-TX, 1000Base-T</td></tr>
+        <tr><td>Cat 6</td><td>10 Gbps</td><td>55m (10G) / 100m (1G)</td><td>Better noise rejection</td><td>10GBase-T short range</td></tr>
+        <tr><td>Cat 6A</td><td>10 Gbps</td><td>100m</td><td>Shielded (STP/ScTP)</td><td>Full 10GBase-T</td></tr>
+        <tr><td>Cat 8</td><td>40 Gbps</td><td>30m</td><td>Shielded</td><td>Data center only</td></tr>
+        <tr><td>Coaxial</td><td>Hundreds MHz</td><td>500m (10Base5)</td><td>Good shielding</td><td>Cable TV, old Ethernet</td></tr>
+        <tr><td>Single-mode fiber</td><td>100+ Tbps</td><td>80+ km</td><td>None (light)</td><td>Long-haul, 1310/1550nm</td></tr>
+        <tr><td>Multi-mode fiber</td><td>100 Gbps</td><td>300–550m</td><td>Modal dispersion</td><td>Data center, 850nm, OM3/OM4</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Fiber Connectors</h3>
+  <ul class="neat">
+    <li><strong>LC</strong> — Small form factor, most common in data centers</li>
+    <li><strong>SC</strong> — Square connector, push-pull</li>
+    <li><strong>FC</strong> — Screw-on, vibration-resistant, test equipment</li>
+    <li><strong>MPO/MTP</strong> — Multi-fiber (12/24), high-density parallel optics (100G/400G)</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- PORT NUMBERS -->
+<!-- ============================================================ -->
+<section id="ports">
+  <div class="section-header">
+    <span class="section-num">32</span>
+    <h2>⚡ STANDARD PORT NUMBERS</h2>
+  </div>
+
+  <div class="callout callout-info">
+    Port ranges: <strong>0–1023</strong> = Well-Known (require root/admin) | <strong>1024–49151</strong> = Registered | <strong>49152–65535</strong> = Dynamic/Ephemeral
+  </div>
+
+  <h3>Core Infrastructure Ports</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Port</th><th>Protocol</th><th>Transport</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="port-num">20</td><td>FTP-Data</td><td class="proto-tcp">TCP</td><td>FTP active mode data channel</td></tr>
+        <tr><td class="port-num">21</td><td>FTP</td><td class="proto-tcp">TCP</td><td>FTP control (commands)</td></tr>
+        <tr><td class="port-num">22</td><td>SSH / SFTP / SCP</td><td class="proto-tcp">TCP</td><td>Secure Shell, SFTP, SCP file copy</td></tr>
+        <tr><td class="port-num">23</td><td>Telnet</td><td class="proto-tcp">TCP</td><td>Unencrypted remote terminal (insecure)</td></tr>
+        <tr><td class="port-num">25</td><td>SMTP</td><td class="proto-tcp">TCP</td><td>Mail transfer (server-to-server)</td></tr>
+        <tr><td class="port-num">53</td><td>DNS</td><td class="proto-both">UDP/TCP</td><td>UDP for queries; TCP for zone transfers & large responses</td></tr>
+        <tr><td class="port-num">67</td><td>DHCP Server</td><td class="proto-udp">UDP</td><td>DHCP server listens</td></tr>
+        <tr><td class="port-num">68</td><td>DHCP Client</td><td class="proto-udp">UDP</td><td>DHCP client port</td></tr>
+        <tr><td class="port-num">69</td><td>TFTP</td><td class="proto-udp">UDP</td><td>Trivial File Transfer (no auth; routers/switches boot)</td></tr>
+        <tr><td class="port-num">80</td><td>HTTP</td><td class="proto-tcp">TCP</td><td>HyperText Transfer Protocol (unencrypted)</td></tr>
+        <tr><td class="port-num">110</td><td>POP3</td><td class="proto-tcp">TCP</td><td>Post Office Protocol v3 (receive email)</td></tr>
+        <tr><td class="port-num">119</td><td>NNTP</td><td class="proto-tcp">TCP</td><td>Network News Transfer Protocol (Usenet)</td></tr>
+        <tr><td class="port-num">123</td><td>NTP</td><td class="proto-udp">UDP</td><td>Network Time Protocol</td></tr>
+        <tr><td class="port-num">135</td><td>RPC / DCOM</td><td class="proto-both">UDP/TCP</td><td>MS Windows RPC endpoint mapper</td></tr>
+        <tr><td class="port-num">137</td><td>NetBIOS-NS</td><td class="proto-udp">UDP</td><td>NetBIOS Name Service</td></tr>
+        <tr><td class="port-num">138</td><td>NetBIOS-DGM</td><td class="proto-udp">UDP</td><td>NetBIOS Datagram Service</td></tr>
+        <tr><td class="port-num">139</td><td>NetBIOS-SSN</td><td class="proto-tcp">TCP</td><td>NetBIOS Session Service (file sharing)</td></tr>
+        <tr><td class="port-num">143</td><td>IMAP</td><td class="proto-tcp">TCP</td><td>Internet Message Access Protocol</td></tr>
+        <tr><td class="port-num">161</td><td>SNMP</td><td class="proto-udp">UDP</td><td>Simple Network Management Protocol (agent)</td></tr>
+        <tr><td class="port-num">162</td><td>SNMP Trap</td><td class="proto-udp">UDP</td><td>SNMP traps/notifications to manager</td></tr>
+        <tr><td class="port-num">179</td><td>BGP</td><td class="proto-tcp">TCP</td><td>Border Gateway Protocol</td></tr>
+        <tr><td class="port-num">389</td><td>LDAP</td><td class="proto-both">UDP/TCP</td><td>Lightweight Directory Access Protocol</td></tr>
+        <tr><td class="port-num">443</td><td>HTTPS</td><td class="proto-tcp">TCP</td><td>HTTP over TLS/SSL</td></tr>
+        <tr><td class="port-num">443</td><td>HTTP/3 (QUIC)</td><td class="proto-udp">UDP</td><td>HTTP/3 over QUIC uses UDP 443</td></tr>
+        <tr><td class="port-num">445</td><td>SMB / CIFS</td><td class="proto-tcp">TCP</td><td>Windows file sharing (direct SMB without NetBIOS)</td></tr>
+        <tr><td class="port-num">465</td><td>SMTPS</td><td class="proto-tcp">TCP</td><td>SMTP over SSL (legacy; 587 preferred)</td></tr>
+        <tr><td class="port-num">500</td><td>IKE / ISAKMP</td><td class="proto-udp">UDP</td><td>IPSec key exchange (IKEv1/v2)</td></tr>
+        <tr><td class="port-num">514</td><td>Syslog</td><td class="proto-udp">UDP</td><td>System logging (plain); TCP 514 also used</td></tr>
+        <tr><td class="port-num">515</td><td>LPD</td><td class="proto-tcp">TCP</td><td>Line Printer Daemon (printing)</td></tr>
+        <tr><td class="port-num">520</td><td>RIP</td><td class="proto-udp">UDP</td><td>Routing Information Protocol</td></tr>
+        <tr><td class="port-num">546</td><td>DHCPv6 Client</td><td class="proto-udp">UDP</td><td>DHCPv6 client port</td></tr>
+        <tr><td class="port-num">547</td><td>DHCPv6 Server</td><td class="proto-udp">UDP</td><td>DHCPv6 server port</td></tr>
+        <tr><td class="port-num">587</td><td>SMTP Submission</td><td class="proto-tcp">TCP</td><td>Email submission (MUA→MSA, with STARTTLS)</td></tr>
+        <tr><td class="port-num">631</td><td>IPP</td><td class="proto-both">UDP/TCP</td><td>Internet Printing Protocol (CUPS)</td></tr>
+        <tr><td class="port-num">636</td><td>LDAPS</td><td class="proto-tcp">TCP</td><td>LDAP over SSL</td></tr>
+        <tr><td class="port-num">853</td><td>DNS over TLS</td><td class="proto-tcp">TCP</td><td>DoT — encrypted DNS</td></tr>
+        <tr><td class="port-num">989</td><td>FTPS-Data</td><td class="proto-tcp">TCP</td><td>FTP over SSL/TLS data</td></tr>
+        <tr><td class="port-num">990</td><td>FTPS</td><td class="proto-tcp">TCP</td><td>FTP over SSL/TLS control</td></tr>
+        <tr><td class="port-num">993</td><td>IMAPS</td><td class="proto-tcp">TCP</td><td>IMAP over SSL</td></tr>
+        <tr><td class="port-num">995</td><td>POP3S</td><td class="proto-tcp">TCP</td><td>POP3 over SSL</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Database & Application Ports</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Port</th><th>Protocol</th><th>Transport</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="port-num">1080</td><td>SOCKS Proxy</td><td class="proto-tcp">TCP</td><td>SOCKS proxy protocol (v4/v5)</td></tr>
+        <tr><td class="port-num">1194</td><td>OpenVPN</td><td class="proto-both">UDP/TCP</td><td>OpenVPN default port</td></tr>
+        <tr><td class="port-num">1433</td><td>MS SQL Server</td><td class="proto-tcp">TCP</td><td>Microsoft SQL Server</td></tr>
+        <tr><td class="port-num">1434</td><td>MS SQL Monitor</td><td class="proto-udp">UDP</td><td>SQL Server Browser (instance discovery)</td></tr>
+        <tr><td class="port-num">1521</td><td>Oracle DB</td><td class="proto-tcp">TCP</td><td>Oracle Database listener</td></tr>
+        <tr><td class="port-num">1723</td><td>PPTP</td><td class="proto-tcp">TCP</td><td>Point-to-Point Tunneling Protocol (VPN; insecure)</td></tr>
+        <tr><td class="port-num">2049</td><td>NFS</td><td class="proto-both">UDP/TCP</td><td>Network File System</td></tr>
+        <tr><td class="port-num">2181</td><td>ZooKeeper</td><td class="proto-tcp">TCP</td><td>Apache ZooKeeper client connections</td></tr>
+        <tr><td class="port-num">3306</td><td>MySQL / MariaDB</td><td class="proto-tcp">TCP</td><td>MySQL / MariaDB database</td></tr>
+        <tr><td class="port-num">3389</td><td>RDP</td><td class="proto-both">UDP/TCP</td><td>Windows Remote Desktop Protocol</td></tr>
+        <tr><td class="port-num">4789</td><td>VXLAN</td><td class="proto-udp">UDP</td><td>Virtual Extensible LAN encapsulation</td></tr>
+        <tr><td class="port-num">5060</td><td>SIP</td><td class="proto-both">UDP/TCP</td><td>Session Initiation Protocol (VoIP)</td></tr>
+        <tr><td class="port-num">5061</td><td>SIP/TLS</td><td class="proto-tcp">TCP</td><td>SIP over TLS</td></tr>
+        <tr><td class="port-num">5432</td><td>PostgreSQL</td><td class="proto-tcp">TCP</td><td>PostgreSQL database</td></tr>
+        <tr><td class="port-num">5672</td><td>AMQP</td><td class="proto-tcp">TCP</td><td>Advanced Message Queuing Protocol (RabbitMQ)</td></tr>
+        <tr><td class="port-num">5900</td><td>VNC</td><td class="proto-tcp">TCP</td><td>Virtual Network Computing (remote desktop)</td></tr>
+        <tr><td class="port-num">6379</td><td>Redis</td><td class="proto-tcp">TCP</td><td>Redis key-value store</td></tr>
+        <tr><td class="port-num">6443</td><td>Kubernetes API</td><td class="proto-tcp">TCP</td><td>Kubernetes API server</td></tr>
+        <tr><td class="port-num">6667</td><td>IRC</td><td class="proto-tcp">TCP</td><td>Internet Relay Chat</td></tr>
+        <tr><td class="port-num">8080</td><td>HTTP-Alt</td><td class="proto-tcp">TCP</td><td>Alternate HTTP / proxy / dev servers</td></tr>
+        <tr><td class="port-num">8443</td><td>HTTPS-Alt</td><td class="proto-tcp">TCP</td><td>Alternate HTTPS port</td></tr>
+        <tr><td class="port-num">8883</td><td>MQTT/TLS</td><td class="proto-tcp">TCP</td><td>MQTT (IoT messaging) over TLS</td></tr>
+        <tr><td class="port-num">9042</td><td>Cassandra</td><td class="proto-tcp">TCP</td><td>Apache Cassandra CQL native transport</td></tr>
+        <tr><td class="port-num">9092</td><td>Kafka</td><td class="proto-tcp">TCP</td><td>Apache Kafka broker</td></tr>
+        <tr><td class="port-num">9200</td><td>Elasticsearch</td><td class="proto-tcp">TCP</td><td>Elasticsearch REST API</td></tr>
+        <tr><td class="port-num">9300</td><td>Elasticsearch</td><td class="proto-tcp">TCP</td><td>Elasticsearch node-to-node transport</td></tr>
+        <tr><td class="port-num">11211</td><td>Memcached</td><td class="proto-both">UDP/TCP</td><td>Memcached caching server</td></tr>
+        <tr><td class="port-num">27017</td><td>MongoDB</td><td class="proto-tcp">TCP</td><td>MongoDB default port</td></tr>
+        <tr><td class="port-num">51820</td><td>WireGuard</td><td class="proto-udp">UDP</td><td>WireGuard VPN default port</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Monitoring & Security Ports</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Port</th><th>Protocol</th><th>Transport</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="port-num">88</td><td>Kerberos</td><td class="proto-both">UDP/TCP</td><td>Kerberos authentication (Active Directory)</td></tr>
+        <tr><td class="port-num">111</td><td>RPCbind / Portmapper</td><td class="proto-both">UDP/TCP</td><td>Maps RPC programs to ports (NFS prerequisite)</td></tr>
+        <tr><td class="port-num">137–139</td><td>NetBIOS</td><td class="proto-both">UDP/TCP</td><td>Windows file/print sharing over NetBIOS</td></tr>
+        <tr><td class="port-num">443</td><td>HTTPS / QUIC</td><td class="proto-both">TCP/UDP</td><td>TCP=HTTPS, UDP=HTTP/3</td></tr>
+        <tr><td class="port-num">4444</td><td>Metasploit</td><td class="proto-tcp">TCP</td><td>Metasploit default handler (security testing)</td></tr>
+        <tr><td class="port-num">4500</td><td>NAT-T (IKE)</td><td class="proto-udp">UDP</td><td>IPSec NAT Traversal</td></tr>
+        <tr><td class="port-num">8008 / 8888</td><td>HTTP Dev</td><td class="proto-tcp">TCP</td><td>Common developer/proxy alternate ports</td></tr>
+        <tr><td class="port-num">9090</td><td>Prometheus</td><td class="proto-tcp">TCP</td><td>Prometheus metrics scraping</td></tr>
+        <tr><td class="port-num">9100</td><td>Node Exporter</td><td class="proto-tcp">TCP</td><td>Prometheus Node Exporter metrics</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-tip">
+    <strong>Exam tip — "Well-known" patterns to remember:</strong> FTP=20/21, SSH=22, Telnet=23, SMTP=25, DNS=53, HTTP=80, POP3=110, NTP=123, IMAP=143, SNMP=161, BGP=179, LDAP=389, HTTPS=443, SMB=445, SMTP-Submit=587, LDAPS=636, IMAPS=993, POP3S=995
+  </div>
+</section>
+
+<!-- END MAIN -->
+</main>
+</div>
+
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Progress bar
+  const prog = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+    prog.style.width = pct + '%';
+    document.getElementById('back-top').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.sidebar a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`nav.sidebar a[href="#${e.target.id}"]`);
+        if (active) { active.classList.add('active'); active.scrollIntoView({block:'nearest'}); }
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-56px 0px 0px 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Search
+  const searchEl = document.getElementById('search');
+  let lastHighlighted = [];
+  searchEl.addEventListener('input', () => {
+    lastHighlighted.forEach(el => {
+      el.innerHTML = el.innerHTML.replace(/<mark>(.*?)<\/mark>/gi, '$1');
+    });
+    lastHighlighted = [];
+    const q = searchEl.value.trim();
+    if (!q || q.length < 2) return;
+    const re = new RegExp(q, 'gi');
+    document.querySelectorAll('main p, main td, main li, main h3, main h4').forEach(el => {
+      if (el.innerHTML.match(re)) {
+        el.innerHTML = el.innerHTML.replace(re, m => `<mark>${m}</mark>`);
+        lastHighlighted.push(el);
+      }
+    });
+    if (lastHighlighted.length > 0) {
+      lastHighlighted[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+</script>
+</body>
+</html>
